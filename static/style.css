@@ -1,24 +1,165 @@
-/* Basic Reset and Variables */
+/*
+ * -----------------------------------------------------------
+ * FINAL MODERN UI CSS - Based on Clean Minimalist Design
+ * -----------------------------------------------------------
+ */
+
+/* 1. Base Setup (Fonts and Background) */
 body {
-    font-family: sans-serif;
+    /* Poppins font use karna */
+    font-family: 'Poppins', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f7f6;
+    /* Soft, light-grey background */
+    background-color: #f7f9fc; 
     color: #333;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    box-sizing: border-box;
+    padding: 20px;
 }
 
-/* --- Modal/Pop-up Styling --- */
+/* 2. Main Card/Interface Styling */
+#main-content {
+    max-width: 800px;
+    width: 90%;
+    padding: 40px;
+    background: white;
+    /* Soft, modern rounded corners */
+    border-radius: 18px;
+    /* Utha hua soft shadow effect */
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1); 
+    transition: all 0.3s ease;
+}
+
+/* Heading */
+h1 {
+    text-align: center;
+    /* Vibrant primary color */
+    color: #1a73e8; 
+    font-weight: 700;
+    margin-bottom: 30px;
+    font-size: 2em;
+    letter-spacing: -0.5px;
+}
+
+/* 3. Tab Buttons */
+.tab-buttons {
+    display: flex;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    overflow: hidden; /* Corners ko theek karne ke liye */
+    margin-bottom: 30px;
+}
+
+.tab-buttons button {
+    flex-grow: 1;
+    padding: 12px 10px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    color: #666;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+}
+
+.tab-buttons button.active {
+    background-color: #1a73e8; /* Primary Blue */
+    color: white;
+    font-weight: 700;
+}
+
+/* 4. Inputs (Textarea/Input Box) */
+.input-section textarea, .input-section input {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #dcdcdc; /* Light and clean border */
+    border-radius: 10px;
+    box-sizing: border-box;
+    margin-bottom: 25px;
+    font-size: 16px;
+    resize: vertical;
+    transition: border-color 0.3s;
+}
+
+.input-section textarea:focus, .input-section input:focus {
+    border-color: #1a73e8; /* Focus hone par primary color */
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.1);
+}
+
+/* 5. Main Check Button (Vibrant & Interactive) */
+.btn-check {
+    background-color: #ff5e57; /* Vibrant Coral Red */
+    color: white;
+    width: 100%;
+    font-size: 1.1em;
+    font-weight: 700;
+    padding: 18px 15px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+}
+
+.btn-check:hover {
+    background-color: #e55039; /* Darker on hover */
+    transform: translateY(-3px); /* Button thoda upar uthe (Depth effect) */
+    box-shadow: 0 5px 15px rgba(229, 80, 57, 0.4);
+}
+
+/* 6. Result Box Styling (Clear and Prominent) */
+.result {
+    margin-top: 35px;
+    padding: 30px;
+    border-radius: 12px;
+    text-align: center;
+    font-size: 1.3em;
+    font-weight: 700;
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    line-height: 1.4;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.result h2 {
+    margin: 0 0 10px 0;
+    font-size: 1.5em;
+}
+
+.result p {
+    font-size: 0.8em;
+    font-weight: 500;
+}
+
+.result.fake {
+    background-color: #ffe0e0; /* Softer Red */
+    border: 2px solid #ff5e57;
+    color: #cc0000;
+}
+
+.result.real {
+    background-color: #e0fff0; /* Softer Green */
+    border: 2px solid #34a853;
+    color: #007a2c;
+}
+
+/* 7. Modal Styling (Login/Signup) */
 .modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0.8);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -27,132 +168,43 @@ body {
 
 .modal-content {
     background: white;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
     text-align: center;
-    max-width: 400px;
+    max-width: 450px;
     width: 90%;
 }
 
-.modal-options button, .auth-form button {
-    margin: 10px 5px;
+.modal-content h2 {
+    color: #1a73e8;
+    font-size: 1.8em;
 }
 
 .auth-form input {
-    width: calc(100% - 20px);
-    padding: 10px;
-    margin: 8px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-/* --- Main Interface Styling --- */
-#main-content {
-    max-width: 800px;
     width: 90%;
-    padding: 20px;
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-}
-
-h1 {
-    text-align: center;
-    color: #1a73e8;
-}
-
-.tab-buttons {
-    display: flex;
-    margin-bottom: 20px;
-}
-
-.tab-buttons button {
-    flex-grow: 1;
-    padding: 10px;
-    border: none;
-    background-color: #eee;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s;
-}
-
-.tab-buttons button.active {
-    background-color: #1a73e8;
-    color: white;
-}
-
-.input-section textarea, .input-section input {
-    width: 100%;
-    padding: 15px;
-    border: 1px solid #ddd;
+    padding: 12px;
+    margin: 10px auto;
+    border: 1px solid #dcdcdc;
     border-radius: 8px;
+    display: block;
     box-sizing: border-box;
-    margin-bottom: 15px;
 }
 
-/* --- Button Styling --- */
-.btn {
-    padding: 10px 20px;
+.btn-primary, .btn-secondary, .btn-guest {
+    padding: 12px 25px;
     border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: opacity 0.3s;
-}
-
-.btn-primary {
-    background-color: #1a73e8;
-    color: white;
-}
-
-.btn-secondary {
-    background-color: #34a853;
-    color: white;
-}
-
-.btn-guest {
-    background-color: #fbbc05;
-    color: #333;
-}
-
-.btn-check {
-    background-color: #ea4335;
-    color: white;
-    width: 100%;
-    font-size: 18px;
-    padding: 15px;
-}
-
-/* --- Result Box Styling --- */
-.result {
-    margin-top: 25px;
-    padding: 20px;
     border-radius: 8px;
-    text-align: center;
-    font-size: 1.2em;
-    font-weight: bold;
-    min-height: 80px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    cursor: pointer;
+    font-weight: 600;
+    transition: transform 0.2s ease, opacity 0.2s;
 }
 
-.result.fake {
-    background-color: #fee2e2; /* Light Red */
-    border: 2px solid #ef4444; /* Dark Red */
-    color: #ef4444;
-}
+.btn-primary { background-color: #1a73e8; color: white; }
+.btn-primary:hover { background-color: #1558ad; transform: translateY(-1px); }
 
-.result.real {
-    background-color: #d1fae5; /* Light Green */
-    border: 2px solid #10b981; /* Dark Green */
-    color: #10b981;
-}
+.btn-secondary { background-color: #34a853; color: white; }
+.btn-secondary:hover { background-color: #2b8c45; transform: translateY(-1px); }
 
-.result.loading {
-    background-color: #fffbeb; /* Light Yellow */
-    border: 2px solid #f59e0b; /* Dark Yellow */
-    color: #f59e0b;
-}
+.btn-guest { background-color: #fbbc05; color: #333; }
+.btn-guest:hover { background-color: #e0a300; transform: translateY(-1px); }
