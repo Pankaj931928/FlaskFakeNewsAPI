@@ -208,3 +208,53 @@ h1 {
 
 .btn-guest { background-color: #fbbc05; color: #333; }
 .btn-guest:hover { background-color: #e0a300; transform: translateY(-1px); }
+
+/* static/style.css */
+
+/* -----------------------------------------------------------
+ * MEDIA QUERIES (Mobile Optimization)
+ * -----------------------------------------------------------
+ */
+
+@media (max-width: 600px) {
+    /* Main Content Padding Adjustments */
+    #main-content {
+        padding: 20px;
+        /* Box Shadow ko thoda kam kar diya */
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); 
+        border-radius: 12px;
+    }
+
+    /* Headings ko chota karna */
+    h1 {
+        font-size: 1.5em; /* Heading ka size chota ho gaya */
+        margin-bottom: 20px;
+    }
+
+    /* Tab Buttons ko stack karna (Agar zarurat ho) */
+    .tab-buttons {
+        flex-direction: column; /* Buttons ek ke neeche ek aayenge */
+        border-radius: 8px;
+    }
+
+    .tab-buttons button {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    /* Result Box ki text size kam karna */
+    .result {
+        padding: 15px;
+        font-size: 1em;
+    }
+    
+    .result h2 {
+        font-size: 1.3em;
+    }
+    
+    /* Login Modal ko full screen karna */
+    .modal-content {
+        max-width: 95%;
+        padding: 20px;
+    }
+}
