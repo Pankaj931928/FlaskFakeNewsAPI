@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fake News Detector | Project</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <div id="initial-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h2>📰 Welcome to FactCheck!</h2>
+            <p>Please log in or continue as a guest.</p>
+            <div class="modal-options">
+                <button class="btn btn-primary" id="login-btn">Login</button>
+                <button class="btn btn-secondary" id="signup-btn">Sign Up</button>
+                <button class="btn btn-guest" onclick="closeModal()">Continue as Guest</button>
+            </div>
+            
+            <div id="auth-forms" style="display:none;">
+                <form id="login-form" class="auth-form">
+                    <input type="email" placeholder="Email" required>
+                    <input type="password" placeholder="Password" required>
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </form>
+
+                <form id="signup-form" class="auth-form" style="display:none;">
+                    <input type="text" placeholder="Name" required>
+                    <input type="email" placeholder="Email" required>
+                    <input type="password" placeholder="Password" required>
+                    <button type="submit" class="btn btn-secondary">Sign Up</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <main id="main-content" style="display:none;">
+        <h1>Text & URL Fact Checker</h1>
+
+        <div class="tab-buttons">
+            <button id="text-tab" class="active" onclick="showInput('text')">Text Input</button>
+            <button id="url-tab" onclick="showInput('url')">URL Input</button>
+        </div>
+
+        <div id="text-input" class="input-section">
+            <textarea id="news-text" placeholder="Paste your news text here..." rows="8"></textarea>
+            <button class="btn btn-check" onclick="sendNews('text')">Check Text</button>
+        </div>
+
+        <div id="url-input" class="input-section" style="display:none;">
+            <input type="url" id="news-url" placeholder="Paste the news URL here...">
+            <button class="btn btn-check" onclick="sendNews('url')">Check URL</button>
+        </div>
+
+        <div id="result-box" class="result">
+            </div>
+    </main>
+    
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

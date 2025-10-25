@@ -1,0 +1,158 @@
+/* Basic Reset and Variables */
+body {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f7f6;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* --- Modal/Pop-up Styling --- */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+}
+
+.modal-options button, .auth-form button {
+    margin: 10px 5px;
+}
+
+.auth-form input {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* --- Main Interface Styling --- */
+#main-content {
+    max-width: 800px;
+    width: 90%;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    color: #1a73e8;
+}
+
+.tab-buttons {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.tab-buttons button {
+    flex-grow: 1;
+    padding: 10px;
+    border: none;
+    background-color: #eee;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.tab-buttons button.active {
+    background-color: #1a73e8;
+    color: white;
+}
+
+.input-section textarea, .input-section input {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-sizing: border-box;
+    margin-bottom: 15px;
+}
+
+/* --- Button Styling --- */
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: opacity 0.3s;
+}
+
+.btn-primary {
+    background-color: #1a73e8;
+    color: white;
+}
+
+.btn-secondary {
+    background-color: #34a853;
+    color: white;
+}
+
+.btn-guest {
+    background-color: #fbbc05;
+    color: #333;
+}
+
+.btn-check {
+    background-color: #ea4335;
+    color: white;
+    width: 100%;
+    font-size: 18px;
+    padding: 15px;
+}
+
+/* --- Result Box Styling --- */
+.result {
+    margin-top: 25px;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 1.2em;
+    font-weight: bold;
+    min-height: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.result.fake {
+    background-color: #fee2e2; /* Light Red */
+    border: 2px solid #ef4444; /* Dark Red */
+    color: #ef4444;
+}
+
+.result.real {
+    background-color: #d1fae5; /* Light Green */
+    border: 2px solid #10b981; /* Dark Green */
+    color: #10b981;
+}
+
+.result.loading {
+    background-color: #fffbeb; /* Light Yellow */
+    border: 2px solid #f59e0b; /* Dark Yellow */
+    color: #f59e0b;
+}
