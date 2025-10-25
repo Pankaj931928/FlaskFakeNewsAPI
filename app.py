@@ -1,9 +1,12 @@
-# app.py (FINAL PURE API CODE: No ML file loading)
+# app.py (FINAL UPDATED CODE: Real-Time Fact Check)
 
 from flask import Flask, render_template, request, jsonify
 import requests
 from bs4 import BeautifulSoup 
 import random 
+# Nayi zaroori imports:
+from datetime import datetime
+import re # Regular Expression for searching day in text
 
 # Flask app initialize karna
 app = Flask(__name__, static_folder='static', template_folder='templates')
@@ -14,18 +17,34 @@ print("✅ Server initialized. Using Mock API for Fake News Detection.")
 
 # --- Mock API Logic ---
 def call_fake_news_api(text):
-    # Yeh logic sirf dikhane ke liye hai ki API call successful hui
-    text = text.lower() # Text ko lower case mein karte hain
+    text = text.lower()
     
-    # 1. Simple, neutral statements ko REAL batao
-    if len(text.split()) < 5 or "is a" in text or "is the" in text or "is an" in text:
-        return {'label': 'real', 'confidence': random.randint(90, 99), 'service': 'Custom Mock API'}
+    # --- 1. Real-Time Date/Day Fact Check Logic (Highest Priority) ---
+    today = datetime.now().strftime('%A').lower() # Current day (e.g., 'saturday')
+    day_regex = r"today is (monday|tuesday|wednesday|thursday|friday|saturday|sunday)"
+    
+    if "today is" in text:
+        match = re.search(day_regex, text)
+        if match:
+            day_stated = match.group(1)
+            
+            if day_stated == today:
+                # Agar statement aur aaj ka din match karte hain (e.g., 'today is saturday')
+                return {'label': 'real', 'confidence': 99, 'service': 'Custom Fact Checker'}
+            else:
+                # Agar statement galat hai (e.g., 'today is Monday' jabki aaj Saturday hai)
+                return {'label': 'fake', 'confidence': 99, 'service': 'Custom Fact Checker'}
+
 
     # 2. Clickbait/Sensationalism ko FAKE batao
     if 'urgent' in text or 'secret' in text or 'shocking' in text or 'must read' in text:
         return {'label': 'fake', 'confidence': random.randint(85, 95), 'service': 'Custom Mock API'}
     
-    # 3. Baaki sabke liye random result (API ka behavior simulate karna)
+    # 3. Simple statements (jo pehle fail ho rahe the) ko REAL/FAKE randomly batao
+    if len(text.split()) < 7:
+        return {'label': 'real', 'confidence': random.randint(80, 90), 'service': 'Custom Mock API'}
+
+    # 4. Baaki sabke liye random result (API ka behavior simulate karna)
     if random.choice([True, False]):
         return {'label': 'real', 'confidence': random.randint(70, 85), 'service': 'Custom Mock API'}
     else:
@@ -83,6 +102,10 @@ def predict():
     is_fake = (api_result['label'] == 'fake')
     confidence = api_result['confidence']
     reason = f"Classification done using External API Simulation ({api_result['service']})."
+
+    # Agar Custom Fact Checker se result aaya hai, toh reason change karo
+    if api_result['service'] == 'Custom Fact Checker':
+         reason = f"Classification done using Custom Fact Checker: Date Mismatch Detected." if is_fake else f"Classification done using Custom Fact Checker: Fact Verified."
 
     return jsonify({
         'isFake': is_fake,
