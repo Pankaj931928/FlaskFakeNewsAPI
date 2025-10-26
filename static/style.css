@@ -1,10 +1,15 @@
+/*
+ * -----------------------------------------------------------
+ * FINAL PREMIUM UI CSS - Dark Gradient, Animations & Logos
+ * -----------------------------------------------------------
+ */
 
 /* 1. Base Setup (Dark Gradient Background & Fonts) */
 body {
     font-family: 'Poppins', sans-serif;
     margin: 0;
     padding: 0;
-    /* FIX: Dark Blue-Black Gradient Background (Netflix Style) */
+    /* FIX: Dark Blue-Black Gradient Background */
     background: linear-gradient(to right, #141e30, #243b55); 
     color: #333;
     display: flex;
@@ -20,27 +25,35 @@ body {
     max-width: 800px;
     width: 90%;
     padding: 40px;
-    background: #ffffff; /* Card ko White rakha for maximum contrast */
-    border-radius: 18px;
+    background: #ffffff; 
+    /* FIX: Rounded Corners zyada kiya */
+    border-radius: 18px; 
     /* FIX: Deep shadow for professional look */
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4); 
     transition: all 0.3s ease;
 }
 
-/* Heading */
+/* 3. Heading as a Box/Banner */
 h1 {
     text-align: center;
-    color: #007bff; /* Bright Blue */
+    /* FIX: Heading ko box-style diya */
+    color: white; 
+    background-color: #007bff; 
+    padding: 15px; 
+    border-radius: 12px; 
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.4); 
+    /* End of box style */
+    
     font-weight: 700;
     margin-bottom: 30px;
-    font-size: 2em;
-    letter-spacing: -0.5px;
+    font-size: 1.8em;
+    letter-spacing: 0.5px;
 }
 
-/* 3. Tab Buttons */
+/* 4. Tab Buttons */
 .tab-buttons {
     display: flex;
-    border: 1px solid #e0e0e0;
+    border: 1px solid #dcdcdc;
     border-radius: 10px;
     overflow: hidden; 
     margin-bottom: 30px;
@@ -50,7 +63,7 @@ h1 {
     flex-grow: 1;
     padding: 12px 10px;
     border: none;
-    background-color: #f7f9fc; /* Light background for non-active tabs */
+    background-color: #f7f9fc; 
     cursor: pointer;
     font-size: 16px;
     font-weight: 500;
@@ -60,12 +73,12 @@ h1 {
 }
 
 .tab-buttons button.active {
-    background-color: #007bff; /* Bright Blue */
+    background-color: #007bff; 
     color: white;
     font-weight: 700;
 }
 
-/* 4. Inputs (Textarea/Input Box) */
+/* 5. Inputs (Textarea/Input Box) */
 .input-section textarea, .input-section input {
     width: 100%;
     padding: 15px;
@@ -84,7 +97,7 @@ h1 {
     box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
 }
 
-/* 5. Main Check Button (Vibrant & Interactive) */
+/* 6. Main Check Button (Vibrant & Interactive) */
 .btn-check {
     background-color: #ff5e57; /* Vibrant Coral Red */
     color: white;
@@ -108,11 +121,11 @@ h1 {
     transform: translateY(-1px);
 }
 
-/* 6. Result Box Styling */
+/* 7. Result Box Styling */
 .result {
     margin-top: 35px;
     padding: 30px;
-    border-radius: 12px;
+    border-radius: 15px; /* FIX: Radius zyada kiya */
     text-align: center;
     font-size: 1.3em;
     font-weight: 700;
@@ -132,7 +145,7 @@ h1 {
 .result.real { background-color: #e0fff0; border: 2px solid #34a853; color: #007a2c; }
 
 
-/* 7. Modal Styling (Login/Signup) - Animation Added */
+/* 8. Modal Styling (Login/Signup) - Animation Added */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -144,23 +157,21 @@ h1 {
     justify-content: center;
     align-items: center;
     z-index: 1000;
-    /* FIX: Modal Fade-in Animation */
     animation: fadeIn 0.3s ease-out; 
 }
 
 .modal-content {
     background: white;
     padding: 40px;
-    border-radius: 15px;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6); /* Darker shadow for contrast */
+    border-radius: 18px; /* FIX: Radius zyada kiya */
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6); 
     text-align: center;
     max-width: 450px;
     width: 90%;
-    /* FIX: Modal Zoom-in Animation */
     animation: zoomIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
 }
 
-/* Login/Signup Buttons (With Shadow/Hover) */
+/* Login/Signup Buttons */
 .btn-primary, .btn-secondary, .btn-guest {
     padding: 12px 25px;
     border: none;
@@ -181,18 +192,7 @@ h1 {
 .btn-guest:hover { background-color: #e0a300; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(251, 188, 5, 0.4); }
 
 
-/* --- ANIMATION KEYFRAMES --- */
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-@keyframes zoomIn {
-    from { transform: scale(0.8); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
-}
-
-/* 8. News Cards & Pro Tools */
+/* 9. News Cards & Pro Tools */
 .card-grid {
     display: flex;
     flex-wrap: wrap;
@@ -203,18 +203,43 @@ h1 {
 }
 
 .news-card {
-    /* FIX: Background white/light grey for contrast */
-    background: #f7f7f7; 
+    width: 120px; /* FIX: Width chota kiya */
+    padding: 10px;
+    /* FIX: Card background light gray, border radius zyada */
+    background: #f7f9fc; 
     border: 1px solid #e0e0e0;
-    /* ... existing properties ... */
+    border-radius: 15px; 
     transition: all 0.2s ease;
+    text-align: center;
+    text-decoration: none;
+    color: #333;
 }
 
 .news-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15); /* Stronger shadow */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15); 
     border-color: #007bff;
 }
+
+/* FIX: Image Sizing and Aspect Ratio */
+.news-card img {
+    width: auto;      
+    height: 35px;     
+    max-width: 100%;  
+    object-fit: contain; 
+    margin-bottom: 5px;
+}
+.news-card:nth-child(1) img, 
+.news-card:nth-child(3) img  
+{
+    height: 50px; 
+    max-height: 50px; 
+}
+
+
+/* --- ANIMATION KEYFRAMES --- */
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes zoomIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
 
 /* --- MEDIA QUERIES (Responsiveness) --- */
