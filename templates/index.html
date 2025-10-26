@@ -4,11 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fake News Detector | Project</title>
-    <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Fake News Detector | Project</title>
-    
+
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
@@ -48,6 +44,7 @@
         <div class="tab-buttons">
             <button id="text-tab" class="active" onclick="showInput('text')">Text Input</button>
             <button id="url-tab" onclick="showInput('url')">URL Input</button>
+            <button id="tools-tab" onclick="showInput('tools')">Pro Tools</button>
         </div>
 
         <div id="text-input" class="input-section">
@@ -59,9 +56,48 @@
             <input type="url" id="news-url" placeholder="Paste the news URL here...">
             <button class="btn btn-check" onclick="sendNews('url')">Check URL</button>
         </div>
-
-        <div id="result-box" class="result">
+        
+        <div id="tools-input" class="input-section" style="display:none;">
+            <div id="pro-features-guest" style="display:none; text-align:center;">
+                 <h3 style="color:#ff5e57;">🔒 Pro Tools Locked</h3>
+                 <p>Please log in to access Text Speaker and Translation services.</p>
             </div>
+
+            <div id="pro-features-logged-in" style="display:none;">
+                <div class="tool-card">
+                    <h3>🔊 Text Speaker</h3>
+                    <p>Listen to the news you pasted for accessibility.</p>
+                    <button class="btn btn-secondary" onclick="speakText()">Speak Text</button>
+                </div>
+                <div class="tool-card">
+                    <h3>🌐 Translate</h3>
+                    <p>Translate the text between English and Hindi.</p>
+                    <button class="btn btn-primary" onclick="translateText()">Translate (Mock)</button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="result-box" class="result"></div>
+        
+        <h2 style="text-align: center; margin-top: 50px; color: #4b6cb7;">Verified News Sources</h2>
+        <div id="news-cards-section" class="card-grid">
+            <a href="https://www.aajtak.in/" target="_blank" class="news-card">
+                <img src="https://upload.wikimedia.org/wikipedia/en/thumb/0/07/Aaj_Tak_2022.svg/100px-Aaj_Tak_2022.svg.png" alt="Aaj Tak Logo">
+                <p>Aaj Tak</p>
+            </a>
+            <a href="https://www.ndtv.com/" target="_blank" class="news-card">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/NDTV_logo.svg/100px-NDTV_logo.svg.png" alt="NDTV Logo">
+                <p>NDTV</p>
+            </a>
+            <a href="https://www.abplive.com/" target="_blank" class="news-card">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/ABP_News_logo.svg/100px-ABP_News_logo.svg.png" alt="ABP News Logo">
+                <p>ABP News</p>
+            </a>
+            <a href="https://timesofindia.indiatimes.com/" target="_blank" class="news-card">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/The_Times_of_India_Logo_2017.svg/100px-The_Times_of_India_Logo_2017.svg.png" alt="TOI Logo">
+                <p>Times of India</p>
+            </a>
+        </div>
     </main>
     
     <script src="{{ url_for('static', filename='script.js') }}"></script>
