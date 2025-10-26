@@ -1,17 +1,11 @@
-/*
- * -----------------------------------------------------------
- * FINAL MODERN UI CSS - Based on Clean Minimalist Design
- * -----------------------------------------------------------
- */
 
-/* 1. Base Setup (Fonts and Background) */
+/* 1. Base Setup (Dark Gradient Background & Fonts) */
 body {
-    /* Poppins font use karna */
     font-family: 'Poppins', sans-serif;
     margin: 0;
     padding: 0;
-    /* Soft, light-grey background */
-    background-color: #f7f9fc; 
+    /* FIX: Dark Blue-Black Gradient Background (Netflix Style) */
+    background: linear-gradient(to right, #141e30, #243b55); 
     color: #333;
     display: flex;
     justify-content: center;
@@ -21,24 +15,22 @@ body {
     padding: 20px;
 }
 
-/* 2. Main Card/Interface Styling */
+/* 2. Main Card/Interface Styling (White Card) */
 #main-content {
     max-width: 800px;
     width: 90%;
     padding: 40px;
-    background: white;
-    /* Soft, modern rounded corners */
+    background: #ffffff; /* Card ko White rakha for maximum contrast */
     border-radius: 18px;
-    /* Utha hua soft shadow effect */
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1); 
+    /* FIX: Deep shadow for professional look */
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4); 
     transition: all 0.3s ease;
 }
 
 /* Heading */
 h1 {
     text-align: center;
-    /* Vibrant primary color */
-    color: #1a73e8; 
+    color: #007bff; /* Bright Blue */
     font-weight: 700;
     margin-bottom: 30px;
     font-size: 2em;
@@ -50,7 +42,7 @@ h1 {
     display: flex;
     border: 1px solid #e0e0e0;
     border-radius: 10px;
-    overflow: hidden; /* Corners ko theek karne ke liye */
+    overflow: hidden; 
     margin-bottom: 30px;
 }
 
@@ -58,7 +50,7 @@ h1 {
     flex-grow: 1;
     padding: 12px 10px;
     border: none;
-    background-color: transparent;
+    background-color: #f7f9fc; /* Light background for non-active tabs */
     cursor: pointer;
     font-size: 16px;
     font-weight: 500;
@@ -68,7 +60,7 @@ h1 {
 }
 
 .tab-buttons button.active {
-    background-color: #1a73e8; /* Primary Blue */
+    background-color: #007bff; /* Bright Blue */
     color: white;
     font-weight: 700;
 }
@@ -77,7 +69,7 @@ h1 {
 .input-section textarea, .input-section input {
     width: 100%;
     padding: 15px;
-    border: 1px solid #dcdcdc; /* Light and clean border */
+    border: 1px solid #dcdcdc; 
     border-radius: 10px;
     box-sizing: border-box;
     margin-bottom: 25px;
@@ -87,9 +79,9 @@ h1 {
 }
 
 .input-section textarea:focus, .input-section input:focus {
-    border-color: #1a73e8; /* Focus hone par primary color */
+    border-color: #007bff; 
     outline: none;
-    box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.1);
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
 }
 
 /* 5. Main Check Button (Vibrant & Interactive) */
@@ -108,12 +100,15 @@ h1 {
 }
 
 .btn-check:hover {
-    background-color: #e55039; /* Darker on hover */
-    transform: translateY(-3px); /* Button thoda upar uthe (Depth effect) */
+    background-color: #e55039; 
+    transform: translateY(-3px); 
     box-shadow: 0 5px 15px rgba(229, 80, 57, 0.4);
 }
+.btn-check:active {
+    transform: translateY(-1px);
+}
 
-/* 6. Result Box Styling (Clear and Prominent) */
+/* 6. Result Box Styling */
 .result {
     margin-top: 35px;
     padding: 30px;
@@ -122,37 +117,22 @@ h1 {
     font-size: 1.3em;
     font-weight: 700;
     min-height: 100px;
+    line-height: 1.4;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    line-height: 1.4;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
 }
 
-.result h2 {
-    margin: 0 0 10px 0;
-    font-size: 1.5em;
-}
+.result h2 { margin: 0 0 10px 0; font-size: 1.5em; }
+.result p { font-size: 0.8em; font-weight: 500; }
 
-.result p {
-    font-size: 0.8em;
-    font-weight: 500;
-}
+.result.fake { background-color: #ffe0e0; border: 2px solid #ff5e57; color: #cc0000; }
+.result.real { background-color: #e0fff0; border: 2px solid #34a853; color: #007a2c; }
 
-.result.fake {
-    background-color: #ffe0e0; /* Softer Red */
-    border: 2px solid #ff5e57;
-    color: #cc0000;
-}
 
-.result.real {
-    background-color: #e0fff0; /* Softer Green */
-    border: 2px solid #34a853;
-    color: #007a2c;
-}
-
-/* 7. Modal Styling (Login/Signup) */
+/* 7. Modal Styling (Login/Signup) - Animation Added */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -164,127 +144,55 @@ h1 {
     justify-content: center;
     align-items: center;
     z-index: 1000;
+    /* FIX: Modal Fade-in Animation */
+    animation: fadeIn 0.3s ease-out; 
 }
 
 .modal-content {
     background: white;
     padding: 40px;
     border-radius: 15px;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6); /* Darker shadow for contrast */
     text-align: center;
     max-width: 450px;
     width: 90%;
+    /* FIX: Modal Zoom-in Animation */
+    animation: zoomIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
 }
 
-.modal-content h2 {
-    color: #1a73e8;
-    font-size: 1.8em;
-}
-
-.auth-form input {
-    width: 90%;
-    padding: 12px;
-    margin: 10px auto;
-    border: 1px solid #dcdcdc;
-    border-radius: 8px;
-    display: block;
-    box-sizing: border-box;
-}
-
+/* Login/Signup Buttons (With Shadow/Hover) */
 .btn-primary, .btn-secondary, .btn-guest {
     padding: 12px 25px;
     border: none;
     border-radius: 8px;
     cursor: pointer;
     font-weight: 600;
-    transition: transform 0.2s ease, opacity 0.2s;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    text-transform: uppercase;
 }
 
-.btn-primary { background-color: #1a73e8; color: white; }
-.btn-primary:hover { background-color: #1558ad; transform: translateY(-1px); }
+.btn-primary { background-color: #007bff; color: white; }
+.btn-primary:hover { background-color: #0069d9; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0, 123, 255, 0.4); }
 
 .btn-secondary { background-color: #34a853; color: white; }
-.btn-secondary:hover { background-color: #2b8c45; transform: translateY(-1px); }
+.btn-secondary:hover { background-color: #2b8c45; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(52, 168, 83, 0.4); }
 
 .btn-guest { background-color: #fbbc05; color: #333; }
-.btn-guest:hover { background-color: #e0a300; transform: translateY(-1px); }
+.btn-guest:hover { background-color: #e0a300; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(251, 188, 5, 0.4); }
 
-/* static/style.css */
 
-/* -----------------------------------------------------------
- * MEDIA QUERIES (Mobile Optimization)
- * -----------------------------------------------------------
- */
-
-@media (max-width: 600px) {
-    /* Main Content Padding Adjustments */
-    #main-content {
-        padding: 20px;
-        /* Box Shadow ko thoda kam kar diya */
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); 
-        border-radius: 12px;
-    }
-
-    /* Headings ko chota karna */
-    h1 {
-        font-size: 1.5em; /* Heading ka size chota ho gaya */
-        margin-bottom: 20px;
-    }
-
-    /* Tab Buttons ko stack karna (Agar zarurat ho) */
-    .tab-buttons {
-        flex-direction: column; /* Buttons ek ke neeche ek aayenge */
-        border-radius: 8px;
-    }
-
-    .tab-buttons button {
-        font-size: 14px;
-        padding: 10px;
-    }
-
-    /* Result Box ki text size kam karna */
-    .result {
-        padding: 15px;
-        font-size: 1em;
-    }
-    
-    .result h2 {
-        font-size: 1.3em;
-    }
-    
-    /* Login Modal ko full screen karna */
-    .modal-content {
-        max-width: 95%;
-        padding: 20px;
-    }
+/* --- ANIMATION KEYFRAMES --- */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
-/* static/style.css - APPEND THIS CODE */
-
-/* New Section for Tool Cards and News Cards */
-.tool-card {
-    border: 1px solid #dcdcdc;
-    border-left: 5px solid #1a73e8;
-    padding: 15px;
-    margin-bottom: 15px;
-    border-radius: 8px;
-    text-align: left;
+@keyframes zoomIn {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
 }
 
-.tool-card h3 {
-    margin: 0 0 5px 0;
-    font-size: 1.2em;
-    color: #1a73e8;
-}
-
-.tool-card p {
-    font-size: 0.9em;
-    color: #666;
-    margin-bottom: 10px;
-}
-
-
-/* News Channel Cards Grid */
+/* 8. News Cards & Pro Tools */
 .card-grid {
     display: flex;
     flex-wrap: wrap;
@@ -295,63 +203,34 @@ h1 {
 }
 
 .news-card {
-    display: block;
-    width: 150px;
-    padding: 10px;
-    text-align: center;
-    text-decoration: none;
-    color: #333;
-    background: #fff;
+    /* FIX: Background white/light grey for contrast */
+    background: #f7f7f7; 
     border: 1px solid #e0e0e0;
-    border-radius: 10px;
+    /* ... existing properties ... */
     transition: all 0.2s ease;
 }
 
-.news-card img {
-    width: 100%;
-    height: auto;
-    max-height: 30px;
-    object-fit: contain;
-    margin-bottom: 5px;
-    /* Aap yahaan actual logo images ke URLs paste kar sakte hain */
-}
-
-.news-card p {
-    font-size: 0.85em;
-    font-weight: 500;
-    margin: 0;
-}
-
 .news-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-    border-color: #1a73e8;
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15); /* Stronger shadow */
+    border-color: #007bff;
 }
 
-/* static/style.css - SABSE NEECHE ADD KARO */
 
-/* Base Image Styling (Overriding previous small height) */
-.news-card img {
-    /* Base style for all logos */
-    width: 100%;
-    height: auto;
-    max-height: 40px; 
-    object-fit: contain; /* Ensures image is not distorted */
-    margin-bottom: 5px;
-}
+/* --- MEDIA QUERIES (Responsiveness) --- */
+@media (max-width: 600px) {
+    #main-content {
+        padding: 20px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); 
+    }
+    h1 { font-size: 1.5em; }
+    
+    .tab-buttons { flex-direction: column; border-radius: 8px; }
+    .tab-buttons button { font-size: 14px; padding: 10px; }
 
-/* FIX: Vertical Logos (Aaj Tak, ABP News) - Inko zyada height/kam width chahiye */
-.news-card:nth-child(1) img, /* Aaj Tak */
-.news-card:nth-child(3) img  /* ABP News */
-{
-    max-height: 60px; /* Thodi zyada height di */
-    width: auto;     /* Width ko adjust kiya */
-}
+    .result { padding: 15px; font-size: 1em; }
+    
+    .news-card { width: 45%; } /* Mobile par do cards ek row mein */
 
-/* FIX: Horizontal Logos (NDTV, TOI) - Inko kam height/zyada width chahiye */
-.news-card:nth-child(2) img, /* NDTV */
-.news-card:nth-child(4) img  /* TOI */
-{
-    max-height: 35px; /* Height kam rakhi */
-    width: 90%;      /* Width zyada rakhi */
+    .modal-content { max-width: 95%; padding: 20px; }
 }
