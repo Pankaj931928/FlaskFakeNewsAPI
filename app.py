@@ -1,8 +1,6 @@
-# app.py (FINAL CODE: Deployed API Logic Only)
+# app.py (FINAL CLEAN CODE: For Render Deployment)
 
-from flask import Flask, render_template, request, jsonify, redirect, url_for, session
-# from flask_sqlalchemy import SQLAlchemy  # COMMENTED OUT FOR DEPLOYMENT
-# from flask_bcrypt import Bcrypt          # COMMENTED OUT FOR DEPLOYMENT
+from flask import Flask, render_template, request, jsonify, session # session ki zaroorat sirf Flask security ke liye
 import requests
 from bs4 import BeautifulSoup 
 import random 
@@ -12,10 +10,8 @@ import re
 # 1. Flask App Initialization (MUST BE FIRST)
 app = Flask(__name__, static_folder='static', template_folder='templates')
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
-app.config['SECRET_KEY'] = 'your_super_secret_key_for_session'
-
-# 2. Database Initialization (All DB related code is REMOVED/COMMENTED)
-# ...
+# Session security ke liye Secret Key zaroori hai
+app.config['SECRET_KEY'] = 'your_super_secret_key_for_session' 
 
 print("✅ Server initialized. Using Mock API for Fake News Detection.")
 
@@ -24,19 +20,24 @@ print("✅ Server initialized. Using Mock API for Fake News Detection.")
 VERIFIED_SOURCES = ['zee news', 'ndtv', 'aj tak', 'aaj tak', 'toi', 'hindustan times', 'reuters', 'ap news'] 
 
 # ----------------------------------------------------
-# --- DATABASE AUTHENTICATION ROUTES (COMMENTED OUT FOR DEPLOYMENT) ---
+# --- AUTHENTICATION MOCK ROUTES (Frontend Link) ---
 # ----------------------------------------------------
 
-# @app.route('/register', methods=['POST'])
-# def register():
-#     return jsonify({'success': False, 'message': 'Registration is disabled in deployed version.'})
+# Note: Yeh routes abhi bhi hone chahiye taaki JavaScript (fetch('/register')) fail na ho.
+# Lekin yeh koi database operation nahi karenge.
 
-# @app.route('/login', methods=['POST'])
-# def login():
-#     return jsonify({'success': False, 'message': 'Login is disabled in deployed version.'})
+@app.route('/register', methods=['POST'])
+def register():
+    # Frontend ko batao ki registration successful ho gaya hai
+    return jsonify({'success': True, 'message': 'Registration successful (Mock).'})
+
+@app.route('/login', methods=['POST'])
+def login():
+    # Frontend ko batao ki login successful ho gaya hai
+    return jsonify({'success': True, 'message': 'Logged in successfully (Mock).'})
 
 # ----------------------------------------------------
-# --- MOCK API AND REMAINING ROUTES ---
+# --- MOCK API LOGIC (Fact Check) ---
 # ----------------------------------------------------
 
 def call_fake_news_api(text):
