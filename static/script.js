@@ -8,26 +8,41 @@ let originalTextCache = '';
 
 // --- Modal and Login/Guest Functions ---
 
+// static/script.js - REPLACE closeModal() FUNCTION
+
 function closeModal() {
     const modal = document.getElementById('initial-modal');
     const mainContent = document.getElementById('main-content');
 
-    // Smooth Fade-out logic
+    // 1. Modal par fade-out animation class add karna (Yeh theek chal raha hai)
     modal.classList.add('modal-fade-out');
 
+    // 2. Animation khatam hone ka wait karna
     modal.addEventListener('animationend', () => {
+        // Animation end hone ke baad, modal ko hide karo
         modal.style.display = 'none';
         
+        // 3. FIX: Main content ko 'display: block' karke turant 'content-fade-in' class lagao
+        // CSS 'opacity' transition is par smooth effect degi
         mainContent.style.display = 'block';
-        mainContent.classList.add('content-fade-in'); 
         
+        // Timeout zaroori hai taaki browser ko display: block aur opacity: 0 ka farq pata chale
+        setTimeout(() => {
+             mainContent.classList.add('content-fade-in'); 
+        }, 50); 
+       
+        // Pro Features ko update karo
         updateProFeaturesVisibility();
+        
+        // Class remove karna
         modal.classList.remove('modal-fade-out');
     }, { once: true }); 
 
+    // Fallback if animation fails (purana code)
     if (modal.getAnimations().length === 0) {
         modal.style.display = 'none';
         mainContent.style.display = 'block';
+        mainContent.classList.add('content-fade-in');
         updateProFeaturesVisibility();
     }
 }
