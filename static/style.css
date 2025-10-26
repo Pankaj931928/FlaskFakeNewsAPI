@@ -271,3 +271,17 @@ h1 {
     from { opacity: 1; transform: scale(1); }
     to { opacity: 0; transform: scale(0.9); } /* Thoda zoom out hote hue gayab ho */
 }
+
+/* static/style.css - APPEND THIS CODE */
+
+/* FIX 1: Main Content ko shuru mein transparent rakho */
+#main-content {
+    /* Existing properties... */
+    opacity: 0; /* Shuru mein bilkul invisible */
+    transition: opacity 0.8s ease-in-out; /* Smooth transition time badhaya */
+}
+
+/* FIX 2: Nayi class jo JavaScript se add hogi */
+.content-fade-in {
+    opacity: 1 !important; /* Jab class mile to turant visible ho jaye */
+}

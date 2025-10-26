@@ -10,32 +10,39 @@ let originalTextCache = '';
 
 // static/script.js - REPLACE closeModal() FUNCTION
 
+// static/script.js - REPLACE closeModal() FUNCTION
+
 function closeModal() {
     const modal = document.getElementById('initial-modal');
     const mainContent = document.getElementById('main-content');
 
-    // 1. Modal par animation class add karna
+    // 1. Modal par fade-out animation class add karna
     modal.classList.add('modal-fade-out');
 
     // 2. Animation khatam hone ka wait karna
     modal.addEventListener('animationend', () => {
-        // Animation end hone ke baad hi modal ko hide karo
+        // Animation end hone ke baad, modal ko hide karo
         modal.style.display = 'none';
         
-        // 3. Main content ko show karo
+        // 3. Main content ko display:block karke uspar fade-in class lagao
         mainContent.style.display = 'block';
+        
+        // FIX: Content-fade-in class add karo for smooth transition
+        setTimeout(() => {
+            mainContent.classList.add('content-fade-in'); 
+        }, 50); // 50ms ka chota delay taaki browser CSS apply kar sake
         
         // 4. Pro Features ko update karo
         updateProFeaturesVisibility();
         
-        // Optional: Future mein dobara kholne ke liye class hata do
         modal.classList.remove('modal-fade-out');
-    }, { once: true }); // Event listener ko sirf ek baar chalao
+    }, { once: true }); 
 
     // Agar animation support na kare to turant band kar do
     if (modal.getAnimations().length === 0) {
         modal.style.display = 'none';
         mainContent.style.display = 'block';
+        mainContent.classList.add('content-fade-in');
         updateProFeaturesVisibility();
     }
 }
