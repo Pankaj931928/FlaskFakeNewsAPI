@@ -26,23 +26,28 @@ body {
     width: 90%;
     padding: 40px;
     background: #ffffff; 
-    /* FIX: Rounded Corners zyada kiya */
     border-radius: 18px; 
     /* FIX: Deep shadow for professional look */
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4); 
-    transition: all 0.3s ease;
+    /* Smooth opacity transition for fade-in effect */
+    transition: opacity 0.8s ease-in-out, transform 0.3s ease; 
+    /* FIX: Main content shuru mein invisible/transparent rahega */
+    opacity: 0; 
+}
+
+/* FIX: JavaScript se yeh class add hogi jab content load hoga */
+.content-fade-in {
+    opacity: 1 !important; 
 }
 
 /* 3. Heading as a Box/Banner */
 h1 {
     text-align: center;
-    /* FIX: Heading ko box-style diya */
     color: white; 
     background-color: #007bff; 
     padding: 15px; 
     border-radius: 12px; 
     box-shadow: 0 4px 15px rgba(0, 123, 255, 0.4); 
-    /* End of box style */
     
     font-weight: 700;
     margin-bottom: 30px;
@@ -78,9 +83,9 @@ h1 {
     font-weight: 700;
 }
 
-/* 5. Inputs (Textarea/Input Box) */
-.input-section textarea, .input-section input {
-    width: 100%;
+/* 5. Inputs (Textarea/Input Box) - FIX: Select tag added */
+.input-section textarea, .input-section input, .auth-form select {
+    width: 100%; /* Default width */
     padding: 15px;
     border: 1px solid #dcdcdc; 
     border-radius: 10px;
@@ -89,9 +94,19 @@ h1 {
     font-size: 16px;
     resize: vertical;
     transition: border-color 0.3s;
+    /* Added for login form select/input alignment */
+    height: 48px; 
+    font-family: 'Poppins', sans-serif;
+    color: #333;
+}
+/* FIX for login form input/select alignment (overrides 100% width) */
+.auth-form input, .auth-form select {
+    width: 90%;
+    margin: 10px auto; 
+    display: block;
 }
 
-.input-section textarea:focus, .input-section input:focus {
+.input-section textarea:focus, .input-section input:focus, .auth-form select:focus {
     border-color: #007bff; 
     outline: none;
     box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
@@ -125,7 +140,7 @@ h1 {
 .result {
     margin-top: 35px;
     padding: 30px;
-    border-radius: 15px; /* FIX: Radius zyada kiya */
+    border-radius: 15px; 
     text-align: center;
     font-size: 1.3em;
     font-weight: 700;
@@ -163,7 +178,7 @@ h1 {
 .modal-content {
     background: white;
     padding: 40px;
-    border-radius: 18px; /* FIX: Radius zyada kiya */
+    border-radius: 18px; 
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6); 
     text-align: center;
     max-width: 450px;
@@ -203,16 +218,17 @@ h1 {
 }
 
 .news-card {
-    width: 120px; /* FIX: Width chota kiya */
+    width: 120px; 
     padding: 10px;
-    /* FIX: Card background light gray, border radius zyada */
+    /* FIX: Card background light gray, border radius zyada, soft shadow */
     background: #f7f9fc; 
-    border: 1px solid #e0e0e0;
+    border: 1px solid #dcdcdc; /* Border color theek kiya */
     border-radius: 15px; 
     transition: all 0.2s ease;
     text-align: center;
     text-decoration: none;
     color: #333;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05); /* Added shadow to individual cards */
 }
 
 .news-card:hover {
@@ -241,6 +257,15 @@ h1 {
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 @keyframes zoomIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
+/* FIX: Modal Fade Out Animation (Login/Guest page jaate waqt) */
+.modal-fade-out {
+    animation: fadeOut 0.4s ease-out forwards; 
+}
+@keyframes fadeOut {
+    from { opacity: 1; transform: scale(1); }
+    to { opacity: 0; transform: scale(0.9); } 
+}
+
 
 /* --- MEDIA QUERIES (Responsiveness) --- */
 @media (max-width: 600px) {
@@ -255,33 +280,7 @@ h1 {
 
     .result { padding: 15px; font-size: 1em; }
     
-    .news-card { width: 45%; } /* Mobile par do cards ek row mein */
+    .news-card { width: 45%; } 
 
     .modal-content { max-width: 95%; padding: 20px; }
-}
-/* static/style.css - NEW FADE OUT CLASS */
-
-/* Naya class jo modal ko fade out karega */
-.modal-fade-out {
-    animation: fadeOut 0.4s ease-out forwards; 
-}
-
-/* Keyframes for Fade Out */
-@keyframes fadeOut {
-    from { opacity: 1; transform: scale(1); }
-    to { opacity: 0; transform: scale(0.9); } /* Thoda zoom out hote hue gayab ho */
-}
-
-/* static/style.css - APPEND THIS CODE */
-
-/* FIX 1: Main Content ko shuru mein transparent rakho */
-#main-content {
-    /* Existing properties... */
-    opacity: 0; /* Shuru mein bilkul invisible */
-    transition: opacity 0.8s ease-in-out; /* Smooth transition time badhaya */
-}
-
-/* FIX 2: Nayi class jo JavaScript se add hogi */
-.content-fade-in {
-    opacity: 1 !important; /* Jab class mile to turant visible ho jaye */
 }

@@ -23,15 +23,27 @@
             
             <div id="auth-forms" style="display:none;">
                 <form id="login-form" class="auth-form">
-                    <input type="email" placeholder="Email" required>
-                    <input type="password" placeholder="Password" required>
+                    <input type="email" placeholder="Email" name="email" required>
+                    <input type="password" placeholder="Password" name="password" required>
+                    <div id="login-message" style="color: red; margin-bottom: 10px; font-size: 0.9em;"></div>
                     <button type="submit" class="btn btn-primary">Login</button>
                 </form>
 
                 <form id="signup-form" class="auth-form" style="display:none;">
-                    <input type="text" placeholder="Name" required>
-                    <input type="email" placeholder="Email" required>
-                    <input type="password" placeholder="Password" required>
+                    <input type="text" placeholder="Name (Username)" name="username" required>
+                    <input type="email" placeholder="Email" name="email" required>
+                    <input type="password" placeholder="Password" name="password" required>
+                    
+                    <select name="gender" required>
+                        <option value="" disabled selected>Select Gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <input type="number" placeholder="Age" name="age" required min="18" max="100">
+                    <input type="date" placeholder="Birth Date" name="birth_date" required>
+                    
+                    <div id="signup-message" style="color: red; margin-bottom: 10px; font-size: 0.9em;"></div>
                     <button type="submit" class="btn btn-secondary">Sign Up</button>
                 </form>
             </div>
@@ -101,6 +113,5 @@
     </main>
     
     <script src="{{ url_for('static', filename='script.js') }}"></script>
-    <script src="{{ url_for('static', filename='matrix_rain.js') }}"></script>
 </body>
 </html>

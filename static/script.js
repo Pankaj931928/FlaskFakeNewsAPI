@@ -1,48 +1,31 @@
-// FINAL WORKING JAVASCRIPT CODE
+// FINAL JAVASCRIPT CODE - Database Registration and Login
 
 // Global Flags and Cache
-let isLoggedIn = false; 
+let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true'; // Check status from storage
 let isTranslated = false; 
 let originalTextCache = ''; 
 
 
-// --- Modal and Login/Guest Functions (Fixes Login Fail) ---
-
-// static/script.js - REPLACE closeModal() FUNCTION
-
-// static/script.js - REPLACE closeModal() FUNCTION
+// --- Modal and Login/Guest Functions ---
 
 function closeModal() {
     const modal = document.getElementById('initial-modal');
     const mainContent = document.getElementById('main-content');
 
-    // 1. Modal par fade-out animation class add karna
+    // Smooth Fade-out logic
     modal.classList.add('modal-fade-out');
 
-    // 2. Animation khatam hone ka wait karna
     modal.addEventListener('animationend', () => {
-        // Animation end hone ke baad, modal ko hide karo
         modal.style.display = 'none';
-        
-        // 3. Main content ko display:block karke uspar fade-in class lagao
         mainContent.style.display = 'block';
-        
-        // FIX: Content-fade-in class add karo for smooth transition
-        setTimeout(() => {
-            mainContent.classList.add('content-fade-in'); 
-        }, 50); // 50ms ka chota delay taaki browser CSS apply kar sake
-        
-        // 4. Pro Features ko update karo
         updateProFeaturesVisibility();
-        
         modal.classList.remove('modal-fade-out');
     }, { once: true }); 
 
-    // Agar animation support na kare to turant band kar do
+    // Fallback if animation fails
     if (modal.getAnimations().length === 0) {
         modal.style.display = 'none';
         mainContent.style.display = 'block';
-        mainContent.classList.add('content-fade-in');
         updateProFeaturesVisibility();
     }
 }
@@ -52,6 +35,7 @@ function openLoginForm() {
     if (authForms) authForms.style.display = 'block'; 
     document.getElementById('login-form').style.display = 'block';
     document.getElementById('signup-form').style.display = 'none';
+    document.getElementById('login-message').textContent = '';
 }
 
 function openSignupForm() {
@@ -59,10 +43,82 @@ function openSignupForm() {
     if (authForms) authForms.style.display = 'block';
     document.getElementById('login-form').style.display = 'none';
     document.getElementById('signup-form').style.display = 'block';
+    document.getElementById('signup-message').textContent = '';
 }
 
-// Function to control Pro Features visibility (Guest vs Login)
+
+// --- DATABASE INTEGRATION FUNCTIONS ---
+
+// Function to collect form data and register
+document.getElementById('signup-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+    const messageDiv = document.getElementById('signup-message');
+    
+    messageDiv.textContent = 'Registering...';
+
+    const response = await fetch('/register', { // New API endpoint
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+    });
+
+    const result = await response.json();
+
+    if (result.success) {
+        // FIX: Registration successful hone par turant Login status set karna
+        localStorage.setItem('userEmail', data.email);
+        localStorage.setItem('isLoggedIn', 'true');
+        isLoggedIn = true;
+        messageDiv.style.color = 'green';
+        messageDiv.textContent = 'Registration successful! Logging in...';
+        setTimeout(closeModal, 1500);
+    } else {
+        messageDiv.style.color = 'red';
+        messageDiv.textContent = result.message || 'Registration failed.';
+    }
+});
+
+
+// Function to handle login
+document.getElementById('login-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+    const messageDiv = document.getElementById('login-message');
+
+    messageDiv.textContent = 'Logging in...';
+
+    const response = await fetch('/login', { // New API endpoint
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+    });
+
+    const result = await response.json();
+
+    if (result.success) {
+        // FIX: Login successful hone par turant Login status set karna
+        localStorage.setItem('userEmail', data.email);
+        localStorage.setItem('isLoggedIn', 'true');
+        isLoggedIn = true;
+        messageDiv.style.color = 'green';
+        messageDiv.textContent = 'Login successful!';
+        setTimeout(closeModal, 1500);
+    } else {
+        messageDiv.style.color = 'red';
+        messageDiv.textContent = result.message || 'Login failed: Invalid credentials.';
+    }
+});
+
+
+// --- Profile/Pro Tools Logic ---
+
 function updateProFeaturesVisibility() {
+    // ... existing logic
     const proGuestDiv = document.getElementById('pro-features-guest');
     const proLoggedInDiv = document.getElementById('pro-features-logged-in');
 
@@ -78,33 +134,11 @@ function updateProFeaturesVisibility() {
 }
 
 
-// --- Event Listeners (CRITICAL FIX for Button Not Working) ---
+// --- Feature Functions (Speak, Translate, SendNews) ---
 
-// FIX: 'onclick' property use ki gayi hai for reliability
-document.getElementById('login-btn').onclick = openLoginForm;
-document.getElementById('signup-btn').onclick = openSignupForm;
-
-
-// Login Form Submit Logic
-document.getElementById('login-form').addEventListener('submit', (e) => {
-    e.preventDefault();
-    isLoggedIn = true;
-    alert("Login Successful! Pro features unlocked.");
-    closeModal(); 
-});
-
-// Signup Form Submit Logic
-document.getElementById('signup-form').addEventListener('submit', (e) => {
-    e.preventDefault(); 
-    isLoggedIn = true;
-    alert("Signup Successful! Pro features unlocked.");
-    closeModal();
-});
-
-
-// --- Tab Switching ---
-
+// Function 4: Tab Switching (ShowInput)
 function showInput(type) {
+    // ... existing logic
     document.querySelectorAll('.input-section').forEach(section => {
         section.style.display = 'none';
     });
@@ -120,9 +154,9 @@ function showInput(type) {
     }
 }
 
-
-// Function 5: Send news to API (Flask Backend) - No changes here
+// Function 5: Send news to API (Flask Backend) - No changes
 async function sendNews(inputType) {
+    // ... existing logic (use the code from your previous working version)
     const inputElement = (inputType === 'text') ? 
                          document.getElementById('news-text') : 
                          document.getElementById('news-url');
@@ -164,7 +198,7 @@ async function sendNews(inputType) {
 }
 
 
-// --- FEATURE 1: Text Speaker Logic ---
+// FEATURE 1: Text Speaker Logic (No changes)
 function speakText() {
     const textToSpeak = document.getElementById('news-text').value;
     if (!textToSpeak) {
@@ -176,7 +210,7 @@ function speakText() {
     window.speechSynthesis.speak(utterance);
 }
 
-// --- FEATURE 2: Translation Logic (Mock) ---
+// FEATURE 2: Translation Logic (Mock) (No changes)
 function translateText() {
     const textarea = document.getElementById('news-text');
     let currentText = textarea.value;
@@ -196,17 +230,15 @@ function translateText() {
             .replace(/real/gi, 'सत्य')
             .replace(/actor/gi, 'अभिनेता');
         
-        // FIX: Translation text area mein dikhana
         textarea.value = `[HINDI MOCK] ${translatedText}`;
         isTranslated = true;
     } else {
-        // Back to Original English
         textarea.value = originalTextCache;
         isTranslated = false;
     }
 }
 
-// Initial call when page is loaded
+// Ensure initial check happens when page is loaded
 window.onload = function() {
     updateProFeaturesVisibility(); 
 };

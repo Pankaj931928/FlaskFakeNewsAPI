@@ -1,27 +1,103 @@
-# app.py (FINAL LOGIC: Verified Source & Fact-Check)
+# app.py (FINAL CODE: MySQL Database Integration and API Logic)
 
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, redirect, url_for, session
+from flask_sqlalchemy import SQLAlchemy
+from flask_bcrypt import Bcrypt # Password hashing ke liye zaroori
 import requests
 from bs4 import BeautifulSoup 
 import random 
 from datetime import datetime
 import re
 
-# Flask app initialize karna
+# 1. Flask App Initialization (MUST BE FIRST)
 app = Flask(__name__, static_folder='static', template_folder='templates')
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
+# --- MySQL Configuration (MUST CHANGE) ---
+# FIX: 'root' username aur 'tiger' password assumed. Aapko sirf database naam badalna hai.
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:tiger@localhost/fakenewsdb'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False 
+app.config['SECRET_KEY'] = 'your_super_secret_key_for_session'
+
+# 2. Database Initialization
+db = SQLAlchemy(app)
+bcrypt = Bcrypt(app) # Bcrypt initialize kiya
+
+# 3. User Model (Database Table Structure)
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(20), unique=True, nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    gender = db.Column(db.String(10), nullable=False)
+    age = db.Column(db.Integer, nullable=False)
+    birth_date = db.Column(db.String(10), nullable=False)
+    password = db.Column(db.String(60), nullable=False) # Hashed password
+    
+    def __repr__(self):
+        return f"User('{self.username}', '{self.email}')"
+
+# 4. Database mein tables banane ke liye (Context ke saath)
+with app.app_context():
+    db.create_all()
+
 print("✅ Server initialized. Using Mock API for Fake News Detection.")
+
 
 # Verified Source Keywords (Aapke channels)
 VERIFIED_SOURCES = ['zee news', 'ndtv', 'aj tak', 'aaj tak', 'toi', 'hindustan times', 'reuters', 'ap news'] 
 
-# --- Mock API Logic ---
+
+# --- DATABASE AUTHENTICATION ROUTES (NEW) ---
+
+@app.route('/register', methods=['POST'])
+def register():
+    data = request.get_json()
+    hashed_password = bcrypt.generate_password_hash(data['password']).decode('utf-8')
+    
+    # Check if user already exists
+    user_exists = User.query.filter_by(email=data['email']).first()
+    if user_exists:
+        return jsonify({'success': False, 'message': 'Email already registered.'})
+
+    # Naya User Create Karna
+    new_user = User(
+        username=data['username'],
+        email=data['email'],
+        gender=data['gender'],
+        age=data['age'],
+        birth_date=data['birth_date'],
+        password=hashed_password
+    )
+    
+    try:
+        db.session.add(new_user)
+        db.session.commit()
+        return jsonify({'success': True, 'message': 'User registered successfully!'})
+    except Exception as e:
+        return jsonify({'success': False, 'message': f'Database Error: {e}'})
+
+
+@app.route('/login', methods=['POST'])
+def login():
+    data = request.get_json()
+    user = User.query.filter_by(email=data['email']).first()
+    
+    # User check karna aur password verify karna
+    if user and bcrypt.check_password_hash(user.password, data['password']):
+        # FIX: Session management (Login status server side maintain karna)
+        session['user_id'] = user.id
+        return jsonify({'success': True, 'message': 'Logged in successfully.'})
+    else:
+        return jsonify({'success': False, 'message': 'Login failed. Check email or password.'})
+
+# --- Mock API Logic (Fact Check) ---
+# (call_fake_news_api, get_text_from_url functions, aur predict route yahan aayega)
+# ... use the code from your previous working app.py file for these functions
 def call_fake_news_api(text):
     text_lower = text.lower()
-    word_count = len(text.split())
+    word_count = len(text_lower.split())
     
-    # --- 1. Real-Time Date/Day Fact Check Logic (Highest Priority) ---
+    # --- 1. Real-Time Date/Day Fact Check Logic ---
     today = datetime.now().strftime('%A').lower() 
     day_regex = r"today is (monday|tuesday|wednesday|thursday|friday|saturday|sunday)"
     
@@ -34,32 +110,31 @@ def call_fake_news_api(text):
             else:
                 return {'label': 'fake', 'confidence': 99, 'service': 'Custom Fact Checker: Day Mismatch'}
     
-    # --- 2. Highly Sensitive/Sensational Claims Logic (FIX) ---
-    # High-risk keywords aur chote sentences (Fake ka score badhega)
-    if ('dead' in text_lower or 'died' in text_lower or 'killed' in text_lower or 'arrested' in text_lower) and word_count < 20:
-        return {'label': 'fake', 'confidence': random.randint(90, 99), 'service': 'Sensational Claim Detector'}
-
-    # --- 3. Clickbait/Sensationalism Logic ---
-    if 'urgent' in text_lower or 'secret' in text_lower or 'shocking' in text_lower or 'must read' in text_lower:
-        return {'label': 'fake', 'confidence': random.randint(85, 95), 'service': 'Clickbait Detector'}
-    
-    # --- 4. Verified Source Trust Logic (NEW) ---
-    # Agar text mein koi verified source ka naam ho
+    # --- 2. Highly Sensational/Misinformation Claims Logic ---
+    if ('dead' in text_lower or 'died' in text_lower or 'killed' in text_lower or 'hoax' in text_lower):
+        if word_count < 20: 
+            return {'label': 'fake', 'confidence': random.randint(95, 99), 'service': 'Sensational Claim Detector'}
+            
+    # --- 3. Verified Source Trust Logic ---
     for source in VERIFIED_SOURCES:
         if source in text_lower:
-            return {'label': 'real', 'confidence': random.randint(80, 95), 'service': 'Source Trust Score'}
+            return {'label': 'real', 'confidence': random.randint(85, 95), 'service': 'Source Trust Score'}
 
-    # --- 5. Baaki sabke liye final check (Content length par zyada bharosa) ---
-    if word_count > 40 and 'exclusive' not in text_lower:
-         return {'label': 'real', 'confidence': random.randint(75, 85), 'service': 'Content Depth Score'}
+    # --- 4. Clickbait/Soft Sensationalism Logic ---
+    if 'urgent' in text_lower or 'secret' in text_lower or 'shocking' in text_lower or 'must read' in text_lower or 'exclusive' in text_lower:
+        return {'label': 'fake', 'confidence': random.randint(75, 85), 'service': 'Clickbait Detector'}
+
+    # --- 5. Neutral/Default Check ---
+    if word_count > 15 and word_count < 60:
+         return {'label': 'real', 'confidence': random.randint(70, 80), 'service': 'Content Depth Score'}
          
-    # 6. Default: Agar koi strong rule match nahi hua, toh 50/50 chance
+    # 6. Default: Random fallback
     if random.choice([True, False]):
-        return {'label': 'real', 'confidence': random.randint(60, 75), 'service': 'Neutral/Random Check'}
+        return {'label': 'real', 'confidence': random.randint(60, 70), 'service': 'Neutral/Random Check'}
     else:
-        return {'label': 'fake', 'confidence': random.randint(60, 75), 'service': 'Neutral/Random Check'}
+        return {'label': 'fake', 'confidence': random.randint(60, 70), 'service': 'Neutral/Random Check'}
 
-# Function jo URL se text nikalega (User-Agent fix ke saath) - NO CHANGES
+# Function jo URL se text nikalega (User-Agent fix ke saath)
 def get_text_from_url(url):
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
@@ -83,7 +158,9 @@ def get_text_from_url(url):
     except Exception:
         return "ERROR: Could not parse web page content."
 
-# --- API Routes ---
+
+# --- Main Render/Check Routes ---
+
 @app.route('/')
 def home():
     return render_template('index.html')
