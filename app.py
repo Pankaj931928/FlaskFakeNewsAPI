@@ -1,8 +1,8 @@
-# app.py (FINAL CODE: MySQL Database Integration)
+# app.py (FINAL CODE: Deployed API Logic Only)
 
 from flask import Flask, render_template, request, jsonify, redirect, url_for, session
-from flask_sqlalchemy import SQLAlchemy
-from flask_bcrypt import Bcrypt # Password hashing ke liye zaroori
+# from flask_sqlalchemy import SQLAlchemy  # COMMENTED OUT FOR DEPLOYMENT
+# from flask_bcrypt import Bcrypt          # COMMENTED OUT FOR DEPLOYMENT
 import requests
 from bs4 import BeautifulSoup 
 import random 
@@ -12,34 +12,10 @@ import re
 # 1. Flask App Initialization (MUST BE FIRST)
 app = Flask(__name__, static_folder='static', template_folder='templates')
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
-
-# --- MySQL Configuration (MUST BE CORRECTED BEFORE RUNNING) ---
-# FIX: 'root' username aur 'tiger' password assumed hai. Syntax theek kiya gaya hai.
-# Yahan root:tiger@localhost/fakenewsdb hona chahiye (jo aapne bataya tha)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:tiger@localhost/fakenewsdb'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False 
 app.config['SECRET_KEY'] = 'your_super_secret_key_for_session'
 
-# 2. Database Initialization
-db = SQLAlchemy(app)
-bcrypt = Bcrypt(app) # Bcrypt initialize kiya
-
-# 3. User Model (Database Table Structure)
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(20), unique=True, nullable=False)
-    email = db.Column(db.String(120), unique=True, nullable=False)
-    gender = db.Column(db.String(10), nullable=False)
-    age = db.Column(db.Integer, nullable=False)
-    birth_date = db.Column(db.String(10), nullable=False)
-    password = db.Column(db.String(60), nullable=False) # Hashed password
-    
-    def __repr__(self):
-        return f"User('{self.username}', '{self.email}')"
-
-# 4. Database mein tables banane ke liye
-with app.app_context():
-    db.create_all() 
+# 2. Database Initialization (All DB related code is REMOVED/COMMENTED)
+# ...
 
 print("✅ Server initialized. Using Mock API for Fake News Detection.")
 
@@ -48,53 +24,16 @@ print("✅ Server initialized. Using Mock API for Fake News Detection.")
 VERIFIED_SOURCES = ['zee news', 'ndtv', 'aj tak', 'aaj tak', 'toi', 'hindustan times', 'reuters', 'ap news'] 
 
 # ----------------------------------------------------
-# --- DATABASE AUTHENTICATION ROUTES (NEW LOGIC) ---
+# --- DATABASE AUTHENTICATION ROUTES (COMMENTED OUT FOR DEPLOYMENT) ---
 # ----------------------------------------------------
 
-@app.route('/register', methods=['POST'])
-def register():
-    data = request.get_json()
-    
-    # Check if user already exists
-    user_exists = User.query.filter_by(email=data['email']).first()
-    if user_exists:
-        return jsonify({'success': False, 'message': 'Email already registered.'})
+# @app.route('/register', methods=['POST'])
+# def register():
+#     return jsonify({'success': False, 'message': 'Registration is disabled in deployed version.'})
 
-    # Password ko hash karna (security ke liye)
-    hashed_password = bcrypt.generate_password_hash(data['password']).decode('utf-8')
-    
-    # Naya User Create Karna
-    new_user = User(
-        username=data['username'],
-        email=data['email'],
-        gender=data['gender'],
-        age=data['age'],
-        birth_date=data['birth_date'],
-        password=hashed_password
-    )
-    
-    try:
-        db.session.add(new_user)
-        db.session.commit()
-        # Registration successful hone par turant session set karna
-        session['user_id'] = new_user.id
-        return jsonify({'success': True, 'message': 'Registration successful! Logging in.'})
-    except Exception as e:
-        return jsonify({'success': False, 'message': f'Database Error. Please check MySQL: {e}'})
-
-
-@app.route('/login', methods=['POST'])
-def login():
-    data = request.get_json()
-    user = User.query.filter_by(email=data['email']).first()
-    
-    # User check karna aur password verify karna
-    if user and bcrypt.check_password_hash(user.password, data['password']):
-        # Session set karna
-        session['user_id'] = user.id
-        return jsonify({'success': True, 'message': 'Logged in successfully.'})
-    else:
-        return jsonify({'success': False, 'message': 'Login failed. Invalid email or password.'})
+# @app.route('/login', methods=['POST'])
+# def login():
+#     return jsonify({'success': False, 'message': 'Login is disabled in deployed version.'})
 
 # ----------------------------------------------------
 # --- MOCK API AND REMAINING ROUTES ---
@@ -104,7 +43,7 @@ def call_fake_news_api(text):
     text_lower = text.lower()
     word_count = len(text_lower.split())
     
-    # --- 1. Real-Time Date/Day Fact Check Logic ---
+    # --- 1. Real-Time Fact Check Logic ---
     today = datetime.now().strftime('%A').lower() 
     day_regex = r"today is (monday|tuesday|wednesday|thursday|friday|saturday|sunday)"
     
@@ -199,7 +138,5 @@ def predict():
     })
 
 if __name__ == '__main__':
-    # 'app.run' se pehle session secret key set karna zaroori hai
-    # Secret key set kar di gayi hai 'app.config' mein.
     print("--- Starting Flask Server (API Mode) ---")
     app.run(host='0.0.0.0', port=5000, debug=True, use_reloader=False)

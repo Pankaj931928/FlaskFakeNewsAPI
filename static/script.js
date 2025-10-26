@@ -1,7 +1,7 @@
 // FINAL WORKING JAVASCRIPT CODE - Database Registration and Login
 
 // Global Flags and Cache
-let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true'; // Check status from storage
+let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true'; 
 let isTranslated = false; 
 let originalTextCache = ''; 
 
@@ -18,15 +18,13 @@ function closeModal() {
     modal.addEventListener('animationend', () => {
         modal.style.display = 'none';
         
-        // FIX: Content Fade-in ke liye block set karna
         mainContent.style.display = 'block';
         mainContent.classList.add('content-fade-in'); 
         
         updateProFeaturesVisibility();
-        modal.classList.remove('modal-fade-in');
+        modal.classList.remove('modal-fade-out');
     }, { once: true }); 
 
-    // Fallback if animation fails
     if (modal.getAnimations().length === 0) {
         modal.style.display = 'none';
         mainContent.style.display = 'block';
@@ -51,23 +49,24 @@ function openSignupForm() {
 }
 
 // --- CRITICAL FIX: Missing Event Listeners ---
-// Login/Signup Button Click Handlers
 document.getElementById('login-btn').onclick = openLoginForm;
 document.getElementById('signup-btn').onclick = openSignupForm;
 
 
 // --- Database Integration & API Calls ---
 
-// Function to collect form data and register (sends data to /register)
+// Function to handle Signup (sends data to /register)
 document.getElementById('signup-form').addEventListener('submit', async (e) => {
     e.preventDefault();
     const form = e.target;
+    // FormData se saare fields ka data collect karna
     const formData = new FormData(form);
     const data = Object.fromEntries(formData.entries());
     const messageDiv = document.getElementById('signup-message');
     
     messageDiv.textContent = 'Registering...';
 
+    // Data ko Flask /register API ko bhejna
     const response = await fetch('/register', { 
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -101,6 +100,7 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
 
     messageDiv.textContent = 'Logging in...';
 
+    // Data ko Flask /login API ko bhejna
     const response = await fetch('/login', { 
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -144,7 +144,6 @@ function updateProFeaturesVisibility() {
 
 // --- Feature Functions (Speak, Translate, SendNews) ---
 
-// Function 4: Tab Switching (ShowInput)
 function showInput(type) {
     document.querySelectorAll('.input-section').forEach(section => {
         section.style.display = 'none';
@@ -163,7 +162,7 @@ function showInput(type) {
 
 // Function 5: Send news to API (Flask Backend) - No changes
 async function sendNews(inputType) {
-    // ... existing logic (used code from your previous version)
+    // ... (Your previous working API call logic)
     const inputElement = (inputType === 'text') ? 
                          document.getElementById('news-text') : 
                          document.getElementById('news-url');
