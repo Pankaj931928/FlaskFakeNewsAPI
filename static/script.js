@@ -8,11 +8,36 @@ let originalTextCache = '';
 
 // --- Modal and Login/Guest Functions (Fixes Login Fail) ---
 
+// static/script.js - REPLACE closeModal() FUNCTION
+
 function closeModal() {
-    // Ye function Guest/Login hone par modal band karta hai
-    document.getElementById('initial-modal').style.display = 'none';
-    document.getElementById('main-content').style.display = 'block';
-    updateProFeaturesVisibility(); // Pro Tools tab ko update karta hai
+    const modal = document.getElementById('initial-modal');
+    const mainContent = document.getElementById('main-content');
+
+    // 1. Modal par animation class add karna
+    modal.classList.add('modal-fade-out');
+
+    // 2. Animation khatam hone ka wait karna
+    modal.addEventListener('animationend', () => {
+        // Animation end hone ke baad hi modal ko hide karo
+        modal.style.display = 'none';
+        
+        // 3. Main content ko show karo
+        mainContent.style.display = 'block';
+        
+        // 4. Pro Features ko update karo
+        updateProFeaturesVisibility();
+        
+        // Optional: Future mein dobara kholne ke liye class hata do
+        modal.classList.remove('modal-fade-out');
+    }, { once: true }); // Event listener ko sirf ek baar chalao
+
+    // Agar animation support na kare to turant band kar do
+    if (modal.getAnimations().length === 0) {
+        modal.style.display = 'none';
+        mainContent.style.display = 'block';
+        updateProFeaturesVisibility();
+    }
 }
 
 function openLoginForm() {

@@ -259,3 +259,15 @@ h1 {
 
     .modal-content { max-width: 95%; padding: 20px; }
 }
+/* static/style.css - NEW FADE OUT CLASS */
+
+/* Naya class jo modal ko fade out karega */
+.modal-fade-out {
+    animation: fadeOut 0.4s ease-out forwards; 
+}
+
+/* Keyframes for Fade Out */
+@keyframes fadeOut {
+    from { opacity: 1; transform: scale(1); }
+    to { opacity: 0; transform: scale(0.9); } /* Thoda zoom out hote hue gayab ho */
+}
