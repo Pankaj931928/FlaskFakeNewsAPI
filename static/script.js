@@ -1,4 +1,4 @@
-// FINAL JAVASCRIPT CODE - Database Registration and Login
+// FINAL WORKING JAVASCRIPT CODE - Database Registration and Login
 
 // Global Flags and Cache
 let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true'; // Check status from storage
@@ -17,9 +17,13 @@ function closeModal() {
 
     modal.addEventListener('animationend', () => {
         modal.style.display = 'none';
+        
+        // FIX: Content Fade-in ke liye block set karna
         mainContent.style.display = 'block';
+        mainContent.classList.add('content-fade-in'); 
+        
         updateProFeaturesVisibility();
-        modal.classList.remove('modal-fade-out');
+        modal.classList.remove('modal-fade-in');
     }, { once: true }); 
 
     // Fallback if animation fails
@@ -46,10 +50,15 @@ function openSignupForm() {
     document.getElementById('signup-message').textContent = '';
 }
 
+// --- CRITICAL FIX: Missing Event Listeners ---
+// Login/Signup Button Click Handlers
+document.getElementById('login-btn').onclick = openLoginForm;
+document.getElementById('signup-btn').onclick = openSignupForm;
 
-// --- DATABASE INTEGRATION FUNCTIONS ---
 
-// Function to collect form data and register
+// --- Database Integration & API Calls ---
+
+// Function to collect form data and register (sends data to /register)
 document.getElementById('signup-form').addEventListener('submit', async (e) => {
     e.preventDefault();
     const form = e.target;
@@ -59,7 +68,7 @@ document.getElementById('signup-form').addEventListener('submit', async (e) => {
     
     messageDiv.textContent = 'Registering...';
 
-    const response = await fetch('/register', { // New API endpoint
+    const response = await fetch('/register', { 
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
@@ -68,7 +77,7 @@ document.getElementById('signup-form').addEventListener('submit', async (e) => {
     const result = await response.json();
 
     if (result.success) {
-        // FIX: Registration successful hone par turant Login status set karna
+        // Registration successful hone par turant Login status set karna
         localStorage.setItem('userEmail', data.email);
         localStorage.setItem('isLoggedIn', 'true');
         isLoggedIn = true;
@@ -82,7 +91,7 @@ document.getElementById('signup-form').addEventListener('submit', async (e) => {
 });
 
 
-// Function to handle login
+// Function to handle login (sends data to /login)
 document.getElementById('login-form').addEventListener('submit', async (e) => {
     e.preventDefault();
     const form = e.target;
@@ -92,7 +101,7 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
 
     messageDiv.textContent = 'Logging in...';
 
-    const response = await fetch('/login', { // New API endpoint
+    const response = await fetch('/login', { 
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
@@ -101,7 +110,7 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
     const result = await response.json();
 
     if (result.success) {
-        // FIX: Login successful hone par turant Login status set karna
+        // Login successful hone par turant Login status set karna
         localStorage.setItem('userEmail', data.email);
         localStorage.setItem('isLoggedIn', 'true');
         isLoggedIn = true;
@@ -118,7 +127,6 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
 // --- Profile/Pro Tools Logic ---
 
 function updateProFeaturesVisibility() {
-    // ... existing logic
     const proGuestDiv = document.getElementById('pro-features-guest');
     const proLoggedInDiv = document.getElementById('pro-features-logged-in');
 
@@ -138,7 +146,6 @@ function updateProFeaturesVisibility() {
 
 // Function 4: Tab Switching (ShowInput)
 function showInput(type) {
-    // ... existing logic
     document.querySelectorAll('.input-section').forEach(section => {
         section.style.display = 'none';
     });
@@ -156,7 +163,7 @@ function showInput(type) {
 
 // Function 5: Send news to API (Flask Backend) - No changes
 async function sendNews(inputType) {
-    // ... existing logic (use the code from your previous working version)
+    // ... existing logic (used code from your previous version)
     const inputElement = (inputType === 'text') ? 
                          document.getElementById('news-text') : 
                          document.getElementById('news-url');
@@ -198,7 +205,7 @@ async function sendNews(inputType) {
 }
 
 
-// FEATURE 1: Text Speaker Logic (No changes)
+// FEATURE 1: Text Speaker Logic 
 function speakText() {
     const textToSpeak = document.getElementById('news-text').value;
     if (!textToSpeak) {
@@ -210,7 +217,7 @@ function speakText() {
     window.speechSynthesis.speak(utterance);
 }
 
-// FEATURE 2: Translation Logic (Mock) (No changes)
+// FEATURE 2: Translation Logic (Mock) 
 function translateText() {
     const textarea = document.getElementById('news-text');
     let currentText = textarea.value;
@@ -238,7 +245,7 @@ function translateText() {
     }
 }
 
-// Ensure initial check happens when page is loaded
+// Initial call when page is loaded
 window.onload = function() {
     updateProFeaturesVisibility(); 
 };

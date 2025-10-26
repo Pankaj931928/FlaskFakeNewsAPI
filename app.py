@@ -1,4 +1,4 @@
-# app.py (FINAL CODE: MySQL Database Integration and API Logic)
+# app.py (FINAL CODE: MySQL Database Integration)
 
 from flask import Flask, render_template, request, jsonify, redirect, url_for, session
 from flask_sqlalchemy import SQLAlchemy
@@ -13,8 +13,9 @@ import re
 app = Flask(__name__, static_folder='static', template_folder='templates')
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
-# --- MySQL Configuration (MUST CHANGE) ---
-# FIX: 'root' username aur 'tiger' password assumed. Aapko sirf database naam badalna hai.
+# --- MySQL Configuration (MUST BE CORRECTED BEFORE RUNNING) ---
+# FIX: 'root' username aur 'tiger' password assumed hai. Syntax theek kiya gaya hai.
+# Yahan root:tiger@localhost/fakenewsdb hona chahiye (jo aapne bataya tha)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:tiger@localhost/fakenewsdb'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False 
 app.config['SECRET_KEY'] = 'your_super_secret_key_for_session'
@@ -36,9 +37,9 @@ class User(db.Model):
     def __repr__(self):
         return f"User('{self.username}', '{self.email}')"
 
-# 4. Database mein tables banane ke liye (Context ke saath)
+# 4. Database mein tables banane ke liye
 with app.app_context():
-    db.create_all()
+    db.create_all() 
 
 print("✅ Server initialized. Using Mock API for Fake News Detection.")
 
@@ -46,19 +47,22 @@ print("✅ Server initialized. Using Mock API for Fake News Detection.")
 # Verified Source Keywords (Aapke channels)
 VERIFIED_SOURCES = ['zee news', 'ndtv', 'aj tak', 'aaj tak', 'toi', 'hindustan times', 'reuters', 'ap news'] 
 
-
-# --- DATABASE AUTHENTICATION ROUTES (NEW) ---
+# ----------------------------------------------------
+# --- DATABASE AUTHENTICATION ROUTES (NEW LOGIC) ---
+# ----------------------------------------------------
 
 @app.route('/register', methods=['POST'])
 def register():
     data = request.get_json()
-    hashed_password = bcrypt.generate_password_hash(data['password']).decode('utf-8')
     
     # Check if user already exists
     user_exists = User.query.filter_by(email=data['email']).first()
     if user_exists:
         return jsonify({'success': False, 'message': 'Email already registered.'})
 
+    # Password ko hash karna (security ke liye)
+    hashed_password = bcrypt.generate_password_hash(data['password']).decode('utf-8')
+    
     # Naya User Create Karna
     new_user = User(
         username=data['username'],
@@ -72,9 +76,11 @@ def register():
     try:
         db.session.add(new_user)
         db.session.commit()
-        return jsonify({'success': True, 'message': 'User registered successfully!'})
+        # Registration successful hone par turant session set karna
+        session['user_id'] = new_user.id
+        return jsonify({'success': True, 'message': 'Registration successful! Logging in.'})
     except Exception as e:
-        return jsonify({'success': False, 'message': f'Database Error: {e}'})
+        return jsonify({'success': False, 'message': f'Database Error. Please check MySQL: {e}'})
 
 
 @app.route('/login', methods=['POST'])
@@ -84,15 +90,16 @@ def login():
     
     # User check karna aur password verify karna
     if user and bcrypt.check_password_hash(user.password, data['password']):
-        # FIX: Session management (Login status server side maintain karna)
+        # Session set karna
         session['user_id'] = user.id
         return jsonify({'success': True, 'message': 'Logged in successfully.'})
     else:
-        return jsonify({'success': False, 'message': 'Login failed. Check email or password.'})
+        return jsonify({'success': False, 'message': 'Login failed. Invalid email or password.'})
 
-# --- Mock API Logic (Fact Check) ---
-# (call_fake_news_api, get_text_from_url functions, aur predict route yahan aayega)
-# ... use the code from your previous working app.py file for these functions
+# ----------------------------------------------------
+# --- MOCK API AND REMAINING ROUTES ---
+# ----------------------------------------------------
+
 def call_fake_news_api(text):
     text_lower = text.lower()
     word_count = len(text_lower.split())
@@ -158,7 +165,6 @@ def get_text_from_url(url):
     except Exception:
         return "ERROR: Could not parse web page content."
 
-
 # --- Main Render/Check Routes ---
 
 @app.route('/')
@@ -193,5 +199,7 @@ def predict():
     })
 
 if __name__ == '__main__':
+    # 'app.run' se pehle session secret key set karna zaroori hai
+    # Secret key set kar di gayi hai 'app.config' mein.
     print("--- Starting Flask Server (API Mode) ---")
     app.run(host='0.0.0.0', port=5000, debug=True, use_reloader=False)
