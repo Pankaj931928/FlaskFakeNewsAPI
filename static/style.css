@@ -327,3 +327,31 @@ h1 {
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
     border-color: #1a73e8;
 }
+
+/* static/style.css - SABSE NEECHE ADD KARO */
+
+/* Base Image Styling (Overriding previous small height) */
+.news-card img {
+    /* Base style for all logos */
+    width: 100%;
+    height: auto;
+    max-height: 40px; 
+    object-fit: contain; /* Ensures image is not distorted */
+    margin-bottom: 5px;
+}
+
+/* FIX: Vertical Logos (Aaj Tak, ABP News) - Inko zyada height/kam width chahiye */
+.news-card:nth-child(1) img, /* Aaj Tak */
+.news-card:nth-child(3) img  /* ABP News */
+{
+    max-height: 60px; /* Thodi zyada height di */
+    width: auto;     /* Width ko adjust kiya */
+}
+
+/* FIX: Horizontal Logos (NDTV, TOI) - Inko kam height/zyada width chahiye */
+.news-card:nth-child(2) img, /* NDTV */
+.news-card:nth-child(4) img  /* TOI */
+{
+    max-height: 35px; /* Height kam rakhi */
+    width: 90%;      /* Width zyada rakhi */
+}

@@ -12,7 +12,7 @@ function closeModal() {
     // Ye function Guest/Login hone par modal band karta hai
     document.getElementById('initial-modal').style.display = 'none';
     document.getElementById('main-content').style.display = 'block';
-    updateProFeaturesVisibility(); // Pro Tools tab ko update karna
+    updateProFeaturesVisibility(); // Pro Tools tab ko update karta hai
 }
 
 function openLoginForm() {
@@ -46,16 +46,17 @@ function updateProFeaturesVisibility() {
 }
 
 
-// --- Event Listeners (Triggers) ---
+// --- Event Listeners (CRITICAL FIX for Button Not Working) ---
 
-// Login/Signup Button Click
-document.getElementById('login-btn').addEventListener('click', openLoginForm);
-document.getElementById('signup-btn').addEventListener('click', openSignupForm);
+// FIX: 'onclick' property use ki gayi hai for reliability
+document.getElementById('login-btn').onclick = openLoginForm;
+document.getElementById('signup-btn').onclick = openSignupForm;
+
 
 // Login Form Submit Logic
 document.getElementById('login-form').addEventListener('submit', (e) => {
     e.preventDefault();
-    isLoggedIn = true; // Set flag to true on successful mock login
+    isLoggedIn = true;
     alert("Login Successful! Pro features unlocked.");
     closeModal(); 
 });
@@ -88,8 +89,7 @@ function showInput(type) {
 }
 
 
-// --- Send News to API (Flask Backend) ---
-
+// Function 5: Send news to API (Flask Backend) - No changes here
 async function sendNews(inputType) {
     const inputElement = (inputType === 'text') ? 
                          document.getElementById('news-text') : 
@@ -164,7 +164,7 @@ function translateText() {
             .replace(/real/gi, 'सत्य')
             .replace(/actor/gi, 'अभिनेता');
         
-        // FIX: Textarea mein translated text dikhana
+        // FIX: Translation text area mein dikhana
         textarea.value = `[HINDI MOCK] ${translatedText}`;
         isTranslated = true;
     } else {
