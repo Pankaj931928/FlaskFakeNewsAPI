@@ -284,3 +284,8 @@ h1 {
 
     .modal-content { max-width: 95%; padding: 20px; }
 }
+/* static/style.css - APPEND THIS CODE */
+/* FIX: Matrix Canvas ko pichhe rakhne ke liye */
+canvas {
+    z-index: -10 !important; 
+}
