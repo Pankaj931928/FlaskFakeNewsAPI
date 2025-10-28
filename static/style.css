@@ -289,3 +289,47 @@ h1 {
 canvas {
     z-index: -10 !important; 
 }
+
+/* static/style.css - APPEND THIS FINAL CODE */
+
+/* --- Profile Dashboard & Avatar Styling (FIX) --- */
+
+.profile-card {
+    border: none !important;
+    padding: 30px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1); /* Soft shadow for contrast */
+}
+
+.profile-details-grid {
+    text-align: left;
+    margin-top: 20px;
+}
+
+.profile-details-grid h4 {
+    margin: 15px 0 5px 0;
+    color: #4b6cb7;
+    font-weight: 500;
+    border-bottom: 1px dashed #e0e0e0;
+    padding-bottom: 5px;
+}
+
+.profile-details-grid .detail-value {
+    color: #333;
+    font-weight: 700;
+    float: right; /* Value ko right side par rakha */
+}
+
+/* User Icon ka style (main content ke top right mein) */
+#user-header-icon {
+    z-index: 100;
+}
+
+/* Media Query Adjustment for Profile Page (Mobile View) */
+@media (max-width: 600px) {
+    .profile-card {
+        padding: 15px;
+    }
+    .profile-details-grid h4 {
+        font-size: 0.9em;
+    }
+}
