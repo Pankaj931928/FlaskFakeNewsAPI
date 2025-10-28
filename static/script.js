@@ -6,7 +6,7 @@ let isTranslated = false;
 let originalTextCache = ''; 
 
 
-// --- Modal and Login/Guest Functions (Includes Smooth Animation Fix) ---
+// --- Modal and Login/Guest Functions ---
 
 function closeModal() {
     const modal = document.getElementById('initial-modal');
@@ -38,6 +38,7 @@ function openLoginForm() {
     document.getElementById('login-form').style.display = 'block';
     document.getElementById('signup-form').style.display = 'none';
     document.getElementById('login-message').textContent = '';
+    document.getElementById('signup-message').textContent = '';
 }
 
 function openSignupForm() {
@@ -45,6 +46,7 @@ function openSignupForm() {
     if (authForms) authForms.style.display = 'block';
     document.getElementById('login-form').style.display = 'none';
     document.getElementById('signup-form').style.display = 'block';
+    document.getElementById('login-message').textContent = '';
     document.getElementById('signup-message').textContent = '';
 }
 
@@ -62,13 +64,10 @@ document.getElementById('signup-form').addEventListener('submit', async (e) => {
     const data = Object.fromEntries(formData.entries());
     const messageDiv = document.getElementById('signup-message');
     
-    // FIX: Full Name combining
-    const fullName = data.username.trim(); // Username field is used for full name in signup
-
     // For mock: LocalStorage use karna
     localStorage.setItem('userEmail', data.email);
     localStorage.setItem('isLoggedIn', 'true');
-    localStorage.setItem('userName', fullName);
+    localStorage.setItem('userName', data.username);
     localStorage.setItem('userGender', data.gender);
     localStorage.setItem('userBirthDate', data.birth_date); 
 
@@ -84,7 +83,7 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
     e.preventDefault();
     const data = Object.fromEntries(new FormData(e.target).entries());
     const messageDiv = document.getElementById('login-message');
-    
+
     // FIX: Combine First Name + Last Name from Login Form
     const fullName = `${data.firstName || ''} ${data.lastName || ''}`.trim();
 
@@ -111,7 +110,7 @@ function logoutUser() {
     window.location.reload(); 
 }
 
-// --- PROFILE & AVATAR HANDLING (FINAL PATHS) ---
+// --- PROFILE & AVATAR HANDLING ---
 
 function displayUserAvatar() {
     const avatarIcon = document.getElementById('avatar-icon');
@@ -127,7 +126,7 @@ function displayUserAvatar() {
         avatarSrc = savedAvatar; // Custom image (Base64)
     } else if (isLoggedIn || gender) {
         // Default avatar (Gender ke hisaab se)
-        // FIX: Correct file extension (Male: webp, Female: jpeg)
+        // Correct file extension (Male: webp, Female: jpeg)
         avatarSrc = gender === 'Female' ? 
                     '{{ url_for("static", filename="image/default_female.jpeg") }}' : 
                     '{{ url_for("static", filename="image/default_male.webp") }}';
@@ -159,9 +158,8 @@ function updateProfileDetails() {
     if (genderInput) genderInput.value = storedGender;
     if (bdInput) bdInput.value = storedBD;
     
-    // Avatar aur Header Status update karna
     displayUserAvatar();
-    updateHeaderStatus(); 
+    updateHeaderStatus();
 }
 
 // NEW: Profile Save Logic
@@ -182,7 +180,6 @@ function saveProfileDetails(event) {
 
     // Avatar aur Profile details ko screen par update karna
     updateProfileDetails(); 
-    displayUserAvatar(); 
 }
 
 // Image Upload Handler (Converts to Base64 and saves)
@@ -220,7 +217,8 @@ function updateHeaderStatus() {
     if (statusP) {
         if (isLoggedIn) {
             const userName = localStorage.getItem('userName');
-            statusP.textContent = userName ? userName.split(' ')[0] : 'My Account'; // First name only
+            // FIX: Name ko update karna
+            statusP.textContent = userName ? userName.split(' ')[0] : 'My Account'; 
             statusP.style.color = '#fff';
         } else {
             statusP.textContent = 'Login';
@@ -235,17 +233,20 @@ function updateHeaderStatus() {
 // --- General UI Logic ---
 
 function updateProFeaturesVisibility() {
+    // FIX: Guest mode mein Profile tab hide karna
+    const profileTab = document.getElementById('profile-tab');
+    
     const proGuestDiv = document.getElementById('pro-features-guest');
     const proLoggedInDiv = document.getElementById('pro-features-logged-in');
 
-    if (proGuestDiv && proLoggedInDiv) {
-        if (isLoggedIn) {
-            proLoggedInDiv.style.display = 'block';
-            proGuestDiv.style.display = 'none';
-        } else {
-            proLoggedInDiv.style.display = 'none';
-            proGuestDiv.style.display = 'block';
-        }
+    if (isLoggedIn) {
+        if (profileTab) profileTab.style.display = 'block';
+        if (proLoggedInDiv) proLoggedInDiv.style.display = 'block';
+        if (proGuestDiv) proGuestDiv.style.display = 'none';
+    } else {
+        if (profileTab) profileTab.style.display = 'none'; // FIX: Profile tab ko Guest mode mein hide kiya
+        if (proLoggedInDiv) proLoggedInDiv.style.display = 'none';
+        if (proGuestDiv) proGuestDiv.style.display = 'block';
     }
 }
 
@@ -273,17 +274,10 @@ function showInput(type) {
     }
 }
 
-
-// Function 5: Send news to API (Flask Backend)
-async function sendNews(inputType) {
-    // ... existing logic
-}
-
-// FEATURE 1: Text Speaker Logic 
-function speakText() { /* existing logic */ }
-
-// FEATURE 2: Translation Logic (Mock) 
-function translateText() { /* existing logic */ }
+// Function 5: Send news to API (Flask Backend) - No changes here
+async function sendNews(inputType) { /* Use your existing API call logic */ }
+function speakText() { /* Your existing speakText logic */ }
+function translateText() { /* Your existing translateText logic */ }
 
 
 // Initial call when page is loaded
