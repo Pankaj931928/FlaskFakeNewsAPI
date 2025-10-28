@@ -1,6 +1,6 @@
-# app.py (FINAL CLEAN CODE: For Render Deployment)
+# app.py (FINAL CLEAN CODE: Solves 502 Error on Render)
 
-from flask import Flask, render_template, request, jsonify, session # session ki zaroorat sirf Flask security ke liye
+from flask import Flask, render_template, request, jsonify, session 
 import requests
 from bs4 import BeautifulSoup 
 import random 
@@ -10,30 +10,25 @@ import re
 # 1. Flask App Initialization (MUST BE FIRST)
 app = Flask(__name__, static_folder='static', template_folder='templates')
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
-# Session security ke liye Secret Key zaroori hai
 app.config['SECRET_KEY'] = 'your_super_secret_key_for_session' 
 
 print("✅ Server initialized. Using Mock API for Fake News Detection.")
-
 
 # Verified Source Keywords (Aapke channels)
 VERIFIED_SOURCES = ['zee news', 'ndtv', 'aj tak', 'aaj tak', 'toi', 'hindustan times', 'reuters', 'ap news'] 
 
 # ----------------------------------------------------
-# --- AUTHENTICATION MOCK ROUTES (Frontend Link) ---
+# --- AUTHENTICATION MOCK ROUTES (DB CODE REMOVED) ---
 # ----------------------------------------------------
-
-# Note: Yeh routes abhi bhi hone chahiye taaki JavaScript (fetch('/register')) fail na ho.
-# Lekin yeh koi database operation nahi karenge.
 
 @app.route('/register', methods=['POST'])
 def register():
-    # Frontend ko batao ki registration successful ho gaya hai
+    # Registration successful (Mock)
     return jsonify({'success': True, 'message': 'Registration successful (Mock).'})
 
 @app.route('/login', methods=['POST'])
 def login():
-    # Frontend ko batao ki login successful ho gaya hai
+    # Login successful (Mock)
     return jsonify({'success': True, 'message': 'Logged in successfully (Mock).'})
 
 # ----------------------------------------------------
@@ -44,7 +39,7 @@ def call_fake_news_api(text):
     text_lower = text.lower()
     word_count = len(text_lower.split())
     
-    # --- 1. Real-Time Fact Check Logic ---
+    # --- 1. Real-Time Date/Day Fact Check Logic ---
     today = datetime.now().strftime('%A').lower() 
     day_regex = r"today is (monday|tuesday|wednesday|thursday|friday|saturday|sunday)"
     
