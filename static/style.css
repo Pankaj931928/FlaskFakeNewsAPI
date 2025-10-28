@@ -9,6 +9,7 @@ body {
     font-family: 'Poppins', sans-serif;
     margin: 0;
     padding: 0;
+    /* FIX: Dark Gradient (Best for contrast) */
     background: linear-gradient(to right, #141e30, #243b55); 
     color: #333;
     display: flex;
@@ -30,10 +31,31 @@ body {
     transition: opacity 0.8s ease-in-out, transform 0.3s ease;
     opacity: 0; 
     position: relative;
+    /* FIX: Top padding badhao taaki Header icon kaafi jagah le */
+    padding-top: 60px;
 }
 
 .content-fade-in {
     opacity: 1 !important; 
+}
+
+/* FIX: Header User Group Positioning and Text Color */
+#user-header-group {
+    /* FIX: Position absolute ko body ke andar rakhenge */
+    position: absolute; 
+    top: 20px;
+    right: 20px;
+    text-align: center;
+    color: white; /* Ensure text is visible on dark background */
+    z-index: 100; /* Bring to front */
+    width: 80px; /* Give it a fixed width to prevent text overlap */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+#user-header-group img {
+    margin-bottom: 5px; /* Space between avatar and text */
 }
 
 /* 3. Heading as a Box/Banner */
@@ -94,7 +116,6 @@ h1 {
     font-family: 'Poppins', sans-serif;
     color: #333;
 }
-
 .auth-form input, .auth-form select {
     width: 90%;
     margin: 10px auto; 
@@ -286,23 +307,11 @@ h1 {
     float: right; 
 }
 
-/* FIX: Header User Group Positioning and Text Color */
+/* User Icon ka style (main content ke top right mein) */
 #user-header-group {
-    position: absolute; /* Already in HTML, but here for clarity/override */
-    top: 20px;
-    right: 20px;
-    text-align: center;
-    color: white; /* Ensure text is visible on dark background */
-    z-index: 100; /* Bring to front */
-    width: 80px; /* Give it a fixed width to prevent overlap */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-#user-header-group img {
-    margin-bottom: 5px; /* Space between avatar and text */
+    /* Position is handled in HTML inline style */
+    z-index: 100;
+    width: 80px; 
 }
 
 /* Avatar Edit Icon Styling */
@@ -343,7 +352,6 @@ h1 {
 
     .modal-content { max-width: 95%; padding: 20px; }
     
-    /* Media Query Adjustment for Profile Page */
     .profile-card { padding: 15px; }
     .profile-details-grid h4 { font-size: 0.9em; }
 }

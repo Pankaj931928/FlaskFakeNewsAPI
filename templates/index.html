@@ -11,6 +11,13 @@
 </head>
 <body>
 
+    <div id="user-header-group" style="position: absolute; top: 20px; right: 20px; z-index: 1000; text-align: center;">
+        <img id="avatar-icon" src="{{ url_for('static', filename='image/default_male.webp') }}" 
+             alt="User Avatar" style="width: 45px; height: 45px; border-radius: 50%; border: 2px solid #007bff; cursor: pointer;">
+        
+        <p id="header-user-status" onclick="handleProfileClick(event)" style="font-size: 0.85em; font-weight: 500; margin-top: 5px; color: #f7f9fc; cursor: pointer;">Login</p>
+    </div>
+
     <div id="initial-modal" class="modal-overlay">
         <div class="modal-content">
             <h2>📰 Welcome to FactCheck!</h2>
@@ -52,12 +59,7 @@
     </div>
 
     <main id="main-content" style="display:none;">
-        <div id="user-header-group" style="position: absolute; top: 20px; right: 20px; text-align: center;">
-            <img id="avatar-icon" src="{{ url_for('static', filename='image/default_male.webp') }}" 
-                 alt="User Avatar" style="width: 45px; height: 45px; border-radius: 50%; border: 2px solid #007bff; cursor: pointer;">
-            <p id="header-user-status" onclick="handleProfileClick(event)" style="font-size: 0.85em; font-weight: 500; margin-top: 5px; color: #f7f9fc; cursor: pointer;">Login</p>
-        </div>
-
+        
         <h1>Text & URL Fact Checker</h1>
 
         <div class="tab-buttons">
