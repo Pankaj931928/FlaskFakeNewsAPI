@@ -9,7 +9,6 @@ body {
     font-family: 'Poppins', sans-serif;
     margin: 0;
     padding: 0;
-    /* FIX: Dark Blue-Black Gradient Background */
     background: linear-gradient(to right, #141e30, #243b55); 
     color: #333;
     display: flex;
@@ -27,15 +26,12 @@ body {
     padding: 40px;
     background: #ffffff; 
     border-radius: 18px; 
-    /* FIX: Deep shadow for professional look */
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4); 
-    /* Smooth opacity transition for fade-in effect */
-    transition: opacity 0.8s ease-in-out, transform 0.3s ease; 
-    /* FIX: Main content shuru mein invisible/transparent rahega */
+    transition: opacity 0.8s ease-in-out, transform 0.3s ease;
     opacity: 0; 
+    position: relative; /* Header Icon ke liye */
 }
 
-/* FIX: JavaScript se yeh class add hogi jab content load hoga */
 .content-fade-in {
     opacity: 1 !important; 
 }
@@ -83,9 +79,9 @@ h1 {
     font-weight: 700;
 }
 
-/* 5. Inputs (Textarea/Input Box) - FIX: Select tag added */
+/* 5. Inputs (Textarea/Input Box) */
 .input-section textarea, .input-section input, .auth-form select {
-    width: 100%; /* Default width */
+    width: 100%;
     padding: 15px;
     border: 1px solid #dcdcdc; 
     border-radius: 10px;
@@ -94,12 +90,11 @@ h1 {
     font-size: 16px;
     resize: vertical;
     transition: border-color 0.3s;
-    /* Added for login form select/input alignment */
     height: 48px; 
     font-family: 'Poppins', sans-serif;
     color: #333;
 }
-/* FIX for login form input/select alignment (overrides 100% width) */
+/* Login form specific inputs */
 .auth-form input, .auth-form select {
     width: 90%;
     margin: 10px auto; 
@@ -207,6 +202,20 @@ h1 {
 .btn-guest:hover { background-color: #e0a300; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(251, 188, 5, 0.4); }
 
 
+/* --- ANIMATION KEYFRAMES --- */
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes zoomIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+/* FIX: Modal Fade Out Animation (Login/Guest page jaate waqt) */
+.modal-fade-out {
+    animation: fadeOut 0.4s ease-out forwards; 
+}
+@keyframes fadeOut {
+    from { opacity: 1; transform: scale(1); }
+    to { opacity: 0; transform: scale(0.9); } 
+}
+
+
 /* 9. News Cards & Pro Tools */
 .card-grid {
     display: flex;
@@ -220,15 +229,14 @@ h1 {
 .news-card {
     width: 120px; 
     padding: 10px;
-    /* FIX: Card background light gray, border radius zyada, soft shadow */
     background: #f7f9fc; 
-    border: 1px solid #dcdcdc; /* Border color theek kiya */
+    border: 1px solid #dcdcdc; 
     border-radius: 15px; 
     transition: all 0.2s ease;
     text-align: center;
     text-decoration: none;
     color: #333;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05); /* Added shadow to individual cards */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05); 
 }
 
 .news-card:hover {
@@ -252,18 +260,54 @@ h1 {
     max-height: 50px; 
 }
 
-
-/* --- ANIMATION KEYFRAMES --- */
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-@keyframes zoomIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-
-/* FIX: Modal Fade Out Animation (Login/Guest page jaate waqt) */
-.modal-fade-out {
-    animation: fadeOut 0.4s ease-out forwards; 
+/* Profile Dashboard Styling */
+.profile-card {
+    border: none !important;
+    padding: 30px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1); 
 }
-@keyframes fadeOut {
-    from { opacity: 1; transform: scale(1); }
-    to { opacity: 0; transform: scale(0.9); } 
+
+.profile-details-grid {
+    text-align: left;
+    margin-top: 20px;
+}
+
+.profile-details-grid h4 {
+    margin: 15px 0 5px 0;
+    color: #4b6cb7;
+    font-weight: 500;
+    border-bottom: 1px dashed #e0e0e0;
+    padding-bottom: 5px;
+}
+
+.profile-details-grid .detail-value {
+    color: #333;
+    font-weight: 700;
+    float: right; 
+}
+
+/* User Icon ka style (main content ke top right mein) */
+#user-header-icon {
+    z-index: 100;
+}
+
+#edit-icon-overlay {
+    position: absolute;
+    bottom: 20px; 
+    right: 0;
+    background-color: #007bff; 
+    color: white;
+    border-radius: 50%;
+    padding: 5px 8px; 
+    font-size: 14px;
+    cursor: pointer;
+    border: 2px solid white; 
+    transition: background-color 0.2s;
+    line-height: 1;
+}
+
+#edit-icon-overlay:hover {
+    background-color: #34a853; 
 }
 
 
@@ -283,53 +327,8 @@ h1 {
     .news-card { width: 45%; } 
 
     .modal-content { max-width: 95%; padding: 20px; }
-}
-/* static/style.css - APPEND THIS CODE */
-/* FIX: Matrix Canvas ko pichhe rakhne ke liye */
-canvas {
-    z-index: -10 !important; 
-}
-
-/* static/style.css - APPEND THIS FINAL CODE */
-
-/* --- Profile Dashboard & Avatar Styling (FIX) --- */
-
-.profile-card {
-    border: none !important;
-    padding: 30px;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1); /* Soft shadow for contrast */
-}
-
-.profile-details-grid {
-    text-align: left;
-    margin-top: 20px;
-}
-
-.profile-details-grid h4 {
-    margin: 15px 0 5px 0;
-    color: #4b6cb7;
-    font-weight: 500;
-    border-bottom: 1px dashed #e0e0e0;
-    padding-bottom: 5px;
-}
-
-.profile-details-grid .detail-value {
-    color: #333;
-    font-weight: 700;
-    float: right; /* Value ko right side par rakha */
-}
-
-/* User Icon ka style (main content ke top right mein) */
-#user-header-icon {
-    z-index: 100;
-}
-
-/* Media Query Adjustment for Profile Page (Mobile View) */
-@media (max-width: 600px) {
-    .profile-card {
-        padding: 15px;
-    }
-    .profile-details-grid h4 {
-        font-size: 0.9em;
-    }
+    
+    /* Media Query Adjustment for Profile Page */
+    .profile-card { padding: 15px; }
+    .profile-details-grid h4 { font-size: 0.9em; }
 }

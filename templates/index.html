@@ -6,6 +6,7 @@
     <title>Fake News Detector | Project</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
@@ -22,6 +23,8 @@
             
             <div id="auth-forms" style="display:none;">
                 <form id="login-form" class="auth-form">
+                    <input type="text" placeholder="First Name" name="firstName" required>
+                    <input type="text" placeholder="Last Name" name="lastName" required>
                     <input type="email" placeholder="Email" name="email" required>
                     <input type="password" placeholder="Password" name="password" required>
                     <div id="login-message" style="color: red; margin-bottom: 10px; font-size: 0.9em;"></div>
@@ -39,7 +42,7 @@
                         <option value="Female">Female</option>
                         <option value="Other">Other</option>
                     </select>
-                    <input type="date" placeholder="Birth Date" name="birth_date" required> 
+                    <input type="date" placeholder="Birth Date" name="birth_date" required>
                     
                     <div id="signup-message" style="color: red; margin-bottom: 10px; font-size: 0.9em;"></div>
                     <button type="submit" class="btn btn-secondary">Sign Up</button>
@@ -49,11 +52,12 @@
     </div>
 
     <main id="main-content" style="display:none;">
-        <div id="user-header-icon" style="position: absolute; top: 30px; right: 30px;">
-            <a href="#" onclick="showInput('profile'); return false;">
+        <div id="user-header-group" style="position: absolute; top: 20px; right: 20px; text-align: center; color: white;">
+            <a href="#" id="header-profile-link" onclick="handleProfileClick(event); return false;">
                 <img id="avatar-icon" src="{{ url_for('static', filename='image/default_male.webp') }}" 
                      alt="User Avatar" style="width: 45px; height: 45px; border-radius: 50%; border: 2px solid #007bff; cursor: pointer;">
             </a>
+            <p id="header-user-status" style="font-size: 0.8em; font-weight: 500; margin-top: 5px; color: #f7f9fc;">Login</p>
         </div>
 
         <h1>Text & URL Fact Checker</h1>
@@ -62,7 +66,7 @@
             <button id="text-tab" class="active" onclick="showInput('text')">Text Input</button>
             <button id="url-tab" onclick="showInput('url')">URL Input</button>
             <button id="tools-tab" onclick="showInput('tools')">Pro Tools</button>
-            <button id="profile-tab" onclick="showInput('profile')">My Profile</button> 
+            <button id="profile-tab" onclick="showInput('profile')">My Profile</button>
         </div>
 
         <div id="text-input" class="input-section">
@@ -100,27 +104,53 @@
                 <h2 style="color: #007bff; margin-bottom: 20px;">👤 My Profile Dashboard</h2>
                 
                 <div style="text-align: center; margin-bottom: 30px; border-bottom: 1px solid #eee; padding-bottom: 20px;">
-                    <img id="profile-avatar" src="{{ url_for('static', filename='image/default_male.webp') }}" 
-                         alt="Profile Photo" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid #ff5e57; margin-bottom: 15px;">
-                    
-                    <input type="file" id="image-upload-input" accept="image/*" style="display: none;">
-                    <button class="btn btn-secondary" onclick="document.getElementById('image-upload-input').click()">
-                        Change Profile Photo
-                    </button>
+                    <div style="position: relative; display: inline-block;">
+                        <img id="profile-avatar" src="{{ url_for('static', filename='image/default_male.webp') }}" 
+                             alt="Profile Photo" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid #ff5e57; margin-bottom: 15px; cursor: pointer;"
+                             onclick="document.getElementById('image-upload-input').click()">
+                        
+                        <div id="edit-icon-overlay" 
+                             onclick="document.getElementById('image-upload-input').click()">
+                            ✏️
+                        </div>
+                        
+                        <input type="file" id="image-upload-input" accept="image/*" style="display: none;">
+                    </div>
+                    <p style="font-size: 0.9em; color: #666; margin-top: 5px;">Edit Profile Picture</p>
                 </div>
                 
-                <div class="profile-details-grid">
-                    <h4>Name: <span id="profile-username" class="detail-value">Guest User</span></h4>
-                    <h4>Email: <span id="profile-email" class="detail-value">guest@factcheck.com</span></h4>
-                    <h4>Gender: <span id="profile-gender" class="detail-value">Not set</span></h4>
-                    <h4>Birth Date: <span id="profile-birthdate" class="detail-value">--/--/----</span></h4>
-                </div>
+                <form id="profile-edit-form" onsubmit="saveProfileDetails(event)">
+                    
+                    <div class="profile-details-grid">
+                        <h4>Name:</h4>
+                        <input type="text" id="profile-username-input" name="username" required>
+                        
+                        <h4>Email:</h4>
+                        <input type="email" id="profile-email-input" name="email" readonly style="background-color: #f0f0f0;">
+                        
+                        <h4>Gender:</h4>
+                        <select name="gender" id="profile-gender-input" required>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        
+                        <h4>Birth Date:</h4>
+                        <input type="date" id="profile-birthdate-input" name="birth_date" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="margin-top: 25px;">
+                        Save Profile Details
+                    </button>
+                    <div id="profile-message" style="color: red; margin-top: 10px; font-size: 0.9em;"></div>
+                </form>
 
                 <button class="btn btn-check" onclick="logoutUser()" style="background-color: #ea4335; margin-top: 30px;">
                     Log Out
                 </button>
             </div>
         </div>
+        
         <div id="result-box" class="result"></div>
         
         <h2 style="text-align: center; margin-top: 50px; color: #4b6cb7;">Verified News Sources</h2>
