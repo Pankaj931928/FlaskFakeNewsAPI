@@ -9,7 +9,6 @@ body {
     font-family: 'Poppins', sans-serif;
     margin: 0;
     padding: 0;
-    /* Dark Blue-Black Gradient Background */
     background: linear-gradient(to right, #141e30, #243b55); 
     color: #333;
     display: flex;
@@ -33,7 +32,6 @@ body {
     position: relative;
 }
 
-/* Fix: Smooth fade-in for main content */
 .content-fade-in {
     opacity: 1 !important; 
 }
@@ -81,7 +79,7 @@ h1 {
     font-weight: 700;
 }
 
-/* 5. Inputs (Textarea/Input Box) - FIX: Select tag included */
+/* 5. Inputs (Textarea/Input Box) */
 .input-section textarea, .input-section input, .auth-form input, .auth-form select {
     width: 100%;
     padding: 15px;
@@ -92,11 +90,11 @@ h1 {
     font-size: 16px;
     resize: vertical;
     transition: border-color 0.3s;
-    height: 48px; /* FIX: Fixed height for consistent look */
+    height: 48px; 
     font-family: 'Poppins', sans-serif;
     color: #333;
 }
-/* Login form specific input/select width fix */
+
 .auth-form input, .auth-form select {
     width: 90%;
     margin: 10px auto; 
@@ -208,7 +206,7 @@ h1 {
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 @keyframes zoomIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
-/* Modal Fade Out Animation (Login/Guest page jaate waqt) */
+/* Modal Fade Out Animation */
 .modal-fade-out {
     animation: fadeOut 0.4s ease-out forwards; 
 }
@@ -233,7 +231,7 @@ h1 {
     padding: 10px;
     background: #f7f9fc; 
     border: 1px solid #dcdcdc; 
-    border-radius: 15px; /* FIX: Increased radius */
+    border-radius: 15px; 
     transition: all 0.2s ease;
     text-align: center;
     text-decoration: none;
@@ -247,7 +245,7 @@ h1 {
     border-color: #007bff;
 }
 
-/* FIX: Image Sizing and Aspect Ratio */
+/* Image Sizing and Aspect Ratio */
 .news-card img {
     width: auto;      
     height: 35px;     
@@ -288,9 +286,23 @@ h1 {
     float: right; 
 }
 
-/* User Icon ka style (main content ke top right mein) */
-#user-header-icon {
-    z-index: 100;
+/* FIX: Header User Group Positioning and Text Color */
+#user-header-group {
+    position: absolute; /* Already in HTML, but here for clarity/override */
+    top: 20px;
+    right: 20px;
+    text-align: center;
+    color: white; /* Ensure text is visible on dark background */
+    z-index: 100; /* Bring to front */
+    width: 80px; /* Give it a fixed width to prevent overlap */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#user-header-group img {
+    margin-bottom: 5px; /* Space between avatar and text */
 }
 
 /* Avatar Edit Icon Styling */

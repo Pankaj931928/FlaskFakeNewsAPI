@@ -12,7 +12,6 @@ function closeModal() {
     const modal = document.getElementById('initial-modal');
     const mainContent = document.getElementById('main-content');
 
-    // Smooth Fade-out logic
     modal.classList.add('modal-fade-out');
 
     modal.addEventListener('animationend', () => {
@@ -64,7 +63,6 @@ document.getElementById('signup-form').addEventListener('submit', async (e) => {
     const data = Object.fromEntries(formData.entries());
     const messageDiv = document.getElementById('signup-message');
     
-    // For mock: LocalStorage use karna
     localStorage.setItem('userEmail', data.email);
     localStorage.setItem('isLoggedIn', 'true');
     localStorage.setItem('userName', data.username);
@@ -84,13 +82,12 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
     const data = Object.fromEntries(new FormData(e.target).entries());
     const messageDiv = document.getElementById('login-message');
 
-    // FIX: Combine First Name + Last Name from Login Form
     const fullName = `${data.firstName || ''} ${data.lastName || ''}`.trim();
 
     if (data.email) { 
         localStorage.setItem('userEmail', data.email);
         localStorage.setItem('isLoggedIn', 'true');
-        localStorage.setItem('userName', fullName || data.email); // Save new name
+        localStorage.setItem('userName', fullName || data.email); 
         isLoggedIn = true;
         messageDiv.style.color = 'green';
         messageDiv.textContent = 'Login successful!';
@@ -124,23 +121,18 @@ function displayUserAvatar() {
     let avatarSrc;
     if (savedAvatar && isLoggedIn) {
         avatarSrc = savedAvatar; // Custom image (Base64)
-    } else if (isLoggedIn || gender) {
-        // Default avatar (Gender ke hisaab se)
-        // Correct file extension (Male: webp, Female: jpeg)
+    } else if (isLoggedIn) { // User logged in (no custom avatar or guest)
         avatarSrc = gender === 'Female' ? 
-                    '{{ url_for("static", filename="image/default_female.jpeg") }}' : 
-                    '{{ url_for("static", filename="image/default_male.webp") }}';
-
-    } else {
-        // Guest mode - default male
-        avatarSrc = '{{ url_for("static", filename="image/default_male.webp") }}';
+                    '/static/image/default_female.jpeg' : // FIX: Direct path for Female
+                    '/static/image/default_male.webp';    // FIX: Direct path for Male
+    } else { // Guest mode
+        avatarSrc = '/static/image/default_male.webp';    // FIX: Direct path for Guest
     }
     
     avatarIcon.src = avatarSrc;
     profileAvatar.src = avatarSrc;
 }
 
-// FIX: Profile details ko input fields mein update karna
 function updateProfileDetails() {
     const usernameInput = document.getElementById('profile-username-input');
     const emailInput = document.getElementById('profile-email-input');
@@ -152,7 +144,6 @@ function updateProfileDetails() {
     const storedGender = localStorage.getItem('userGender') || 'Male';
     const storedBD = localStorage.getItem('userBirthDate') || '';
 
-    // Data ko Input Fields mein load karna
     if (usernameInput) usernameInput.value = storedUsername;
     if (emailInput) emailInput.value = storedEmail;
     if (genderInput) genderInput.value = storedGender;
@@ -162,15 +153,13 @@ function updateProfileDetails() {
     updateHeaderStatus();
 }
 
-// NEW: Profile Save Logic
 function saveProfileDetails(event) {
-    event.preventDefault(); // Form ko refresh hone se rokna
+    event.preventDefault(); 
     const form = document.getElementById('profile-edit-form');
     const formData = new FormData(form);
     const data = Object.fromEntries(formData.entries());
     const messageDiv = document.getElementById('profile-message');
 
-    // Data ko LocalStorage mein save karna
     localStorage.setItem('userName', data.username);
     localStorage.setItem('userGender', data.gender);
     localStorage.setItem('userBirthDate', data.birth_date);
@@ -178,11 +167,9 @@ function saveProfileDetails(event) {
     messageDiv.style.color = 'green';
     messageDiv.textContent = '✅ Profile details saved successfully!';
 
-    // Avatar aur Profile details ko screen par update karna
     updateProfileDetails(); 
 }
 
-// Image Upload Handler (Converts to Base64 and saves)
 document.getElementById('image-upload-input').addEventListener('change', function() {
     const file = this.files[0];
     if (file) {
@@ -202,12 +189,10 @@ function handleProfileClick(event) {
     event.preventDefault();
 
     if (!isLoggedIn) {
-        // If not logged in (Guest), show Login Modal
         document.getElementById('initial-modal').style.display = 'flex';
         document.getElementById('main-content').style.display = 'none';
-        openLoginForm(); // Open login form by default
+        openLoginForm(); 
     } else {
-        // If logged in, go to Profile Tab
         showInput('profile');
     }
 }
@@ -217,23 +202,19 @@ function updateHeaderStatus() {
     if (statusP) {
         if (isLoggedIn) {
             const userName = localStorage.getItem('userName');
-            // FIX: Name ko update karna
-            statusP.textContent = userName ? userName.split(' ')[0] : 'My Account'; 
-            statusP.style.color = '#fff';
+            statusP.textContent = userName ? userName : 'My Account'; // FIX: Display full name
+            statusP.style.color = '#f7f9fc'; // FIX: Ensure color for better visibility
         } else {
             statusP.textContent = 'Login';
-            statusP.style.color = '#fff';
+            statusP.style.color = '#f7f9fc';
         }
     }
-    // Link the header icon click to the new logic
-    const headerLink = document.getElementById('header-profile-link');
-    if (headerLink) headerLink.onclick = handleProfileClick;
+    // No direct click handler on avatar icon, only on text
 }
 
 // --- General UI Logic ---
 
 function updateProFeaturesVisibility() {
-    // FIX: Guest mode mein Profile tab hide karna
     const profileTab = document.getElementById('profile-tab');
     
     const proGuestDiv = document.getElementById('pro-features-guest');
@@ -244,7 +225,7 @@ function updateProFeaturesVisibility() {
         if (proLoggedInDiv) proLoggedInDiv.style.display = 'block';
         if (proGuestDiv) proGuestDiv.style.display = 'none';
     } else {
-        if (profileTab) profileTab.style.display = 'none'; // FIX: Profile tab ko Guest mode mein hide kiya
+        if (profileTab) profileTab.style.display = 'none'; 
         if (proLoggedInDiv) proLoggedInDiv.style.display = 'none';
         if (proGuestDiv) proGuestDiv.style.display = 'block';
     }
@@ -274,7 +255,6 @@ function showInput(type) {
     }
 }
 
-// Function 5: Send news to API (Flask Backend) - No changes here
 async function sendNews(inputType) { /* Use your existing API call logic */ }
 function speakText() { /* Your existing speakText logic */ }
 function translateText() { /* Your existing translateText logic */ }
