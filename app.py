@@ -1,4 +1,4 @@
-# app.py (FINAL CLEAN CODE: Solves 502 Error on Render)
+# app.py (FINAL CODE: Solves 502 Error on Render)
 
 from flask import Flask, render_template, request, jsonify, session 
 import requests
@@ -7,7 +7,7 @@ import random
 from datetime import datetime
 import re
 
-# 1. Flask App Initialization (MUST BE FIRST)
+# 1. Flask App Initialization
 app = Flask(__name__, static_folder='static', template_folder='templates')
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 app.config['SECRET_KEY'] = 'your_super_secret_key_for_session' 
@@ -18,7 +18,7 @@ print("✅ Server initialized. Using Mock API for Fake News Detection.")
 VERIFIED_SOURCES = ['zee news', 'ndtv', 'aj tak', 'aaj tak', 'toi', 'hindustan times', 'reuters', 'ap news'] 
 
 # ----------------------------------------------------
-# --- AUTHENTICATION MOCK ROUTES (DB CODE REMOVED) ---
+# --- AUTHENTICATION MOCK ROUTES (DB Code Removed) ---
 # ----------------------------------------------------
 
 @app.route('/register', methods=['POST'])
@@ -39,7 +39,7 @@ def call_fake_news_api(text):
     text_lower = text.lower()
     word_count = len(text_lower.split())
     
-    # --- 1. Real-Time Date/Day Fact Check Logic ---
+    # --- 1. Real-Time Fact Check Logic (Working Logic Restored) ---
     today = datetime.now().strftime('%A').lower() 
     day_regex = r"today is (monday|tuesday|wednesday|thursday|friday|saturday|sunday)"
     
